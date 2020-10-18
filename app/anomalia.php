@@ -1,0 +1,74 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class anomalia extends Model
+{
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+
+    // Nombre de la tabla en MySQL.
+    protected $table='anomalias';
+    
+    // Eloquent asume que cada tabla tiene una clave primaria con una columna llamada id.
+	// Si éste no fuera el caso entonces hay que indicar cuál es nuestra clave primaria en la tabla:
+	protected $primaryKey = 'idAnomalia';    
+    
+    // Atributos que se pueden asignar de manera masiva.
+    protected $fillable = [
+        'idMateriaProfesor','idSubCategoria','afectado','descripcion','valoracion'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+
+    // Aquí ponemos los campos que no queremos que se devuelvan en las consultas.
+    protected $hidden = [
+        'created_at','updated_at'
+    ];
+
+
+    // Definimos a continuación la relación de esta tabla con otras.
+	// Ejemplos de relaciones:
+	// 1 usuario tiene 1 teléfono   ->hasOne() Relación 1:1
+	// 1 teléfono pertenece a 1 usuario   ->belongsTo() Relación 1:1 inversa a hasOne()
+	// 1 post tiene muchos comentarios  -> hasMany() Relación 1:N 
+	// 1 comentario pertenece a 1 post ->belongsTo() Relación 1:N inversa a hasMany()
+	// 1 usuario puede tener muchos roles  ->belongsToMany()
+    //  etc..
+    
+    
+    public function Materia_Profesor()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\materia_profesor','idMateriaProfesor','idMateriaProfesor');
+    }
+
+    public function Profesor()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsToMany('App\profesor','diagnostico_tutors','idAnomalia','idProfesor')
+                ->withPivot('descripcion');
+    }
+
+    public function SubCategoria()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\subcategoria','idSubCategoria','idSubCategoria');
+    }
+
+    public function Estudiante()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsToMany('App\estudiante','reporte_estudiantes','idAnomalia','idEstudiante');
+    }
+
+}
