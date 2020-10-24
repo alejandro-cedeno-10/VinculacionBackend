@@ -45,7 +45,7 @@ class curso extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function Profesor()
+    public function Profesores()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\profesor','materia_profesors','idCurso','idProfesor')
@@ -53,7 +53,7 @@ class curso extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Materia()
+    public function Materias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\materia','materia_profesors','idCurso','idMateria')
@@ -61,7 +61,7 @@ class curso extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Paralelo()
+    public function Paralelos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\paralelo','materia_profesors','idCurso','idParalelo')
@@ -69,7 +69,7 @@ class curso extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Especialidad()
+    public function Especialidades()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\especialidad','materia_profesors','idCurso','idEspecialidad')
@@ -77,7 +77,7 @@ class curso extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Periodo_Lectivo()
+    public function Periodo_Lectivos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\periodo_lectivo','materia_profesors','idCurso','idPeriodoLectivo')
@@ -85,13 +85,13 @@ class curso extends Model
                 'idMateria','numeroHoras');
     }
 
-    public function Matricula()
+    public function Matriculas()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\matricula','idCurso','idCurso');
     }
 
-    public function Cuestionario()
+    public function Cuestionarios()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\cuestionario','idCurso','idCurso');

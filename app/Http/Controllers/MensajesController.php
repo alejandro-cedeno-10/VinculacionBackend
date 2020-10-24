@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\mensajes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MensajesController extends Controller
 {
@@ -14,7 +15,15 @@ class MensajesController extends Controller
      */
     public function index()
     {
-        //
+        $mensajes=Cache::remember('mensajes',30/60, function()
+            {
+                // Caché válida durante 30 segundos.
+                return mensajes::all();
+            });
+           
+        return response()->json([
+			'status'=>true,
+			'data'=>$mensajes], 200);
     }
 
     /**
@@ -35,7 +44,24 @@ class MensajesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'idPersona'     => 'required|string|max:10|exists:users,idPersona',
+            'receptor'     => 'required|string|max:10|exists:users,idPersona',
+            'mensaje'     => 'required|string|max:256'            
+        ]);
+
+        $mensajes=Cache::remember('mensajes',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return mensajes::create($request->all());
+            });
+	
+		$mensajes->save();
+	
+        return response()->json(['data'=>$mensajes,
+            'message' => 'Mensaje Creado'], 201)
+            ->header('Location', env('APP_URL').'mensajes/'.$mensajes->idMensaje)
+            ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -44,9 +70,26 @@ class MensajesController extends Controller
      * @param  \App\mensajes  $mensajes
      * @return \Illuminate\Http\Response
      */
-    public function show(mensajes $mensajes)
+    public function show($id)
     {
-        //
+        $mensajes=Cache::remember('mensajes',30/60, function() use ($id)
+		{
+			// Caché válida durante 30 segundos.
+			return mensajes::find($id);
+		});
+
+		if(!$mensajes)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un mensaje con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$mensajes],200);
     }
 
     /**
@@ -67,9 +110,71 @@ class MensajesController extends Controller
      * @param  \App\mensajes  $mensajes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, mensajes $mensajes)
+    public function update(Request $request, $id)
     {
-        //
+        $mensajes=Cache::remember('mensajes',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return mensajes::find($id);
+		});
+
+		if(!$mensajes)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un mensaje con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+		
+		if($request->method() === 'PUT')
+		{
+            $request->validate([
+                'mensaje'     => 'required|string|max:256'
+            ]);
+			
+			$mensajes->mensaje = $request->mensaje;
+		
+			$mensajes->save();
+
+			return response()->json([
+				'status'=>true,
+				'data'=>$mensajes],200)
+				->header('Location', env('APP_URL').'mensajes/'.$mensajes->idMensaje)
+				->header('Content-Type', 'application/json');
+		}else{
+			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
+			$bandera = false;
+
+			if ($request->mensaje!= null)
+			{
+				$request->validate([
+                    'mensaje'     => 'required|string|max:256'
+                ]);
+
+				$mensajes->mensaje = $request->mensaje;
+				$bandera=true;
+			}
+			
+			if ($bandera)
+			{
+				// Almacenamos en la base de datos el registro.
+				$mensajes->save();
+				return response()->json([
+					'status'=>true,
+					'data'=>$mensajes],200)
+					->header('Location', env('APP_URL').'mensajes/'.$mensajes->idMensaje)
+					->header('Content-Type', 'application/json');
+			}
+			else
+			{
+				return response()->json([
+					'errors'=>array(['
+					status'=>false,
+					'message'=>'No se ha modificado ningún dato.'])
+				],200);
+			}		
+		}
     }
 
     /**
@@ -78,8 +183,43 @@ class MensajesController extends Controller
      * @param  \App\mensajes  $mensajes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(mensajes $mensajes)
+    public function destroy($id)
     {
-        //
+        $mensajes=Cache::remember('mensajes',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return mensajes::find($id);  
+		});
+		
+		if(!$mensaje)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un mensaje con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		$Persona=$mensajes->Persona->first();
+
+		$Receptor=$mensajes->Receptor->first();
+      
+		if ($Persona || $Receptor)
+		{
+			$mensajes->delete();
+			
+			return response()->json([
+				'status'=>true,
+				'message'=>'El mensaje contaba con relaciones. Se ha eliminado el mensaje correctamente.'
+			],200);
+			
+		}   
+
+		$curso->delete();
+
+        return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado el mensaje correctamente.'
+		],200);
     }
 }

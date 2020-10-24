@@ -45,19 +45,19 @@ class pregunta extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function Cuestionario()
+    public function Cuestionarios()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\cuestionario','cuestionario_preguntas','idCuestionario','idPregunta');
     }
 
-    public function Opcion()
+    public function Opciones()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\opcion','idPregunta','idPregunta');
     }
 
-    public function Respuesta()
+    public function Respuestas()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\respuesta','idPregunta','idPregunta');

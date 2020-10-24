@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\estado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class EstadoController extends Controller
 {
@@ -14,7 +15,15 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        //
+        $estado=Cache::remember('estados',30/60, function()
+            {
+                // Caché válida durante 30 segundos.
+                return estado::all();
+            });
+        
+        return response()->json([
+            'status'=>true,
+            'data'=>$estado], 200);
     }
 
     /**
@@ -35,7 +44,22 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombreEstado'     => 'required|string|max:50'            
+        ]);
+
+        $estado=Cache::remember('estados',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return estado::create($request->all());
+            });
+	
+		$estado->save();
+	
+        return response()->json(['data'=>$estado,
+            'message' => 'Estado Creado'], 201)
+            ->header('Location', env('APP_URL').'estados/'.$estado->idEstado)
+            ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -44,9 +68,26 @@ class EstadoController extends Controller
      * @param  \App\estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function show(estado $estado)
+    public function show($id)
     {
-        //
+        $estado=Cache::remember('estados',30/60, function() use ($id)
+		{
+			// Caché válida durante 30 segundos.
+			return estado::find($id);
+		});
+
+		if(!$estado)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un estado con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$estado],200);
     }
 
     /**
@@ -67,9 +108,71 @@ class EstadoController extends Controller
      * @param  \App\estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, estado $estado)
+    public function update(Request $request, $id)
     {
-        //
+        $estado=Cache::remember('estados',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return estado::find($id);
+		});
+
+		if(!$estado)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un estado con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+		
+		if($request->method() === 'PUT')
+		{
+            $request->validate([
+                'nombreEstado'     => 'required|string|max:50'
+            ]);
+			
+			$estado->nombreEstado = $request->nombreEstado;
+		
+			$estado->save();
+
+			return response()->json([
+				'status'=>true,
+				'data'=>$estado],200)
+				->header('Location', env('APP_URL').'estados/'.$estado->idEstado)
+				->header('Content-Type', 'application/json');
+		}else{
+			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
+			$bandera = false;
+
+			if ($request->nombreEstado!= null)
+			{
+				$request->validate([
+                    'nombreEstado'     => 'required|string|max:50'
+                ]);
+
+				$estado->nombreEstado = $request->nombreEstado;
+				$bandera=true;
+			}
+			
+			if ($bandera)
+			{
+				// Almacenamos en la base de datos el registro.
+				$estado->save();
+				return response()->json([
+					'status'=>true,
+					'data'=>$estado],200)
+					->header('Location', env('APP_URL').'estados/'.$estado->idEstado)
+					->header('Content-Type', 'application/json');
+			}
+			else
+			{
+				return response()->json([
+					'errors'=>array(['
+					status'=>false,
+					'message'=>'No se ha modificado ningún dato.'])
+				],200);
+			}		
+		}
     }
 
     /**
@@ -78,8 +181,43 @@ class EstadoController extends Controller
      * @param  \App\estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(estado $estado)
+    public function destroy($id)
     {
-        //
+        $estado=Cache::remember('estados',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return estado::find($id);  
+		});
+		
+		if(!$estado)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un estado con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		$Estudiantes=$estado->Estudiantes->first();
+
+        $Matriculas=$estado->Matriculas->first();
+
+		if ($Estudiantes || $Matriculas)
+		{
+			$estado->delete();
+			
+			return response()->json([
+				'status'=>true,
+				'message'=>'El estado contaba con relaciones. Se ha eliminado el estado correctamente.'
+			],200);
+			
+		}   
+
+		$estado->delete();
+
+        return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado el estado correctamente.'
+		],200);
     }
 }

@@ -76,7 +76,7 @@ class cuestionario extends Model
         return $this->belongsTo('App\periodo_lectivo','idPeriodoLectivo','idPeriodoLectivo');
     }
     
-    public function Pregunta()
+    public function Preguntas()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\pregunta','cuestionario_preguntas','idCuestionario','idPregunta');

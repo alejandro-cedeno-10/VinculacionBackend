@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\materia_profesor;
+use App\materia;
+
+use Spatie\QueryBuilder\QueryBuilder;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MateriaProfesorController extends Controller
 {
+    // Configuramos en el constructor del 
+	// Controlador la autenticación usando el Middleware auth.basic,
+    public function __construct()
+	{
+		/* $this->middleware('auth',['only'=>['index']]); */ 
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,14 @@ class MateriaProfesorController extends Controller
      */
     public function index()
     {
-        //
+        $materia = QueryBuilder::for(materia::class)
+            ->allowedIncludes('profesors')
+            ->get();
+
+        return response()->json([
+			'status'=>true,
+            'data'=>$materia
+        ], 200);
     }
 
     /**
@@ -41,21 +60,42 @@ class MateriaProfesorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\materia_profesor  $materia_profesor
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(materia_profesor $materia_profesor)
+    public function show($id)
     {
         //
+        $materia=Cache::remember('materias',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return materia::find($id);  
+		});
+
+        if(!$materia)
+        {
+            return response()->json(
+                ['errors'=>array(['code'=>404,
+                'message'=>'No se encuentra una materia con ese identificador.',
+                'identificador'=>$id
+            ])],404);
+        }
+
+        $profesores=$materia->Profesores;
+
+        return response()->json([
+            'status'=>true,
+            'data'=>$materia
+        ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\materia_profesor  $materia_profesor
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(materia_profesor $materia_profesor)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +104,10 @@ class MateriaProfesorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\materia_profesor  $materia_profesor
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, materia_profesor $materia_profesor)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +115,10 @@ class MateriaProfesorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\materia_profesor  $materia_profesor
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(materia_profesor $materia_profesor)
+    public function destroy($id)
     {
         //
     }

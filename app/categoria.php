@@ -45,7 +45,7 @@ class categoria extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function SubCategoria()
+    public function SubCategorias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\categoria','idCategoria','idCategoria');

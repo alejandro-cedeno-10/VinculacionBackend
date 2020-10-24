@@ -73,13 +73,13 @@ class User extends Authenticatable
     //  etc..
     
     
-    public function Persona_Estudiante()
+    public function Estudiante()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasOne('App\estudiante','idEstudiante','idPersona');
     }
     
-    public function Persona_Representante()
+    public function Estudiante_Representante()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasOne('App\estudiante','idRepresentante','idPersona');
@@ -102,13 +102,13 @@ class User extends Authenticatable
         return $this->hasOne('App\representante','idRepresentante','idPersona');
     }
 
-    public function Mensajes_Persona()
+    public function Mensaje()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasOne('App\mensajes','idPersona','idPersona');
     }
     
-    public function Mensajes_Receptor()
+    public function Mensaje_Receptor()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasOne('App\mensajes','receptor','idPersona');

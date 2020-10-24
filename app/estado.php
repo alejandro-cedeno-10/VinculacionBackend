@@ -45,14 +45,14 @@ class estado extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function Estado_Estudiante()
+    public function Estudiantes()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\estudiante','estado_estudiantes','idEstado','idEstudiante')
                 ->withPivot('fecha','idMatricula','descripcion');
     }
     
-    public function Estado_Matricula()
+    public function Matriculas()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\matricula','estado_estudiantes','idEstado','idMatricula')

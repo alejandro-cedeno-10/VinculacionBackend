@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\estudiante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class EstudianteController extends Controller
 {
@@ -14,7 +15,15 @@ class EstudianteController extends Controller
      */
     public function index()
     {
-        //
+        $estudiante=Cache::remember('estudiantes',30/60, function()
+            {
+                // Caché válida durante 30 segundos.
+                return estudiante::all();
+            });
+       
+        return response()->json([
+            'status'=>true,
+            'data'=>$estudiante], 200);
     }
 
     /**
@@ -35,7 +44,24 @@ class EstudianteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'idEstudiante'     => 'required|string|max:11|exists:users,idPersona',  
+            'idRepresentante'     => 'required|string|max:11|exists:users,idPersona',           
+            'procedencia'     => 'required|string|max:80' 
+        ]);
+
+        $estudiante=Cache::remember('estudiantes',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return estudiante::create($request->all());
+            });
+	
+		$estudiante->save();
+	
+        return response()->json(['data'=>$estudiante,
+            'message' => 'Estudiante Creado'], 201)
+            ->header('Location', env('APP_URL').'estudiantes/'.$estudiante->idEstudiante)
+            ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -44,9 +70,26 @@ class EstudianteController extends Controller
      * @param  \App\estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function show(estudiante $estudiante)
+    public function show($id)
     {
-        //
+        $estudiante=Cache::remember('estudiantes',30/60, function() use ($id)
+		{
+			// Caché válida durante 30 segundos.
+			return estudiante::find($id);
+		});
+
+		if(!$estudiante)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un estudiante con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$estudiante],200);
     }
 
     /**
@@ -67,9 +110,71 @@ class EstudianteController extends Controller
      * @param  \App\estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, estudiante $estudiante)
+    public function update(Request $request, $id)
     {
-        //
+        $estudiante=Cache::remember('estudiantes',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return estudiante::find($id);
+		});
+
+		if(!$estudiante)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un estudiante con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+		
+		if($request->method() === 'PUT')
+		{
+            $request->validate([
+                'procedencia'     => 'required|string|max:80'
+            ]);
+			
+			$estudiante->procedencia = $request->procedencia;
+		
+			$estudiante->save();
+
+			return response()->json([
+				'status'=>true,
+				'data'=>$estudiante],200)
+				->header('Location', env('APP_URL').'estudiantes/'.$estudiante->idEstudiante)
+				->header('Content-Type', 'application/json');
+		}else{
+			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
+			$bandera = false;
+
+			if ($request->procedencia!= null)
+			{
+				$request->validate([
+                    'procedencia'     => 'required|string|max:80'
+                ]);
+
+				$estudiante->procedencia = $request->procedencia;
+				$bandera=true;
+			}
+			
+			if ($bandera)
+			{
+				// Almacenamos en la base de datos el registro.
+				$estudiante->save();
+				return response()->json([
+					'status'=>true,
+					'data'=>$estudiante],200)
+					->header('Location', env('APP_URL').'estudiantes/'.$estudiante->idEstudiante)
+					->header('Content-Type', 'application/json');
+			}
+			else
+			{
+				return response()->json([
+					'errors'=>array(['
+					status'=>false,
+					'message'=>'No se ha modificado ningún dato.'])
+				],200);
+			}		
+		}
     }
 
     /**
@@ -78,8 +183,51 @@ class EstudianteController extends Controller
      * @param  \App\estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function destroy(estudiante $estudiante)
+    public function destroy($id)
     {
-        //
+        $estudiante=Cache::remember('estudiantes',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return estudiante::find($id);  
+		});
+		
+		if(!$estudiante)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un estudiante con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		$User_Estudiante=$estudiante->User_Estudiante->first();
+		
+        $User_Representante=$estudiante->User_Representante->first();
+        
+        $Estados=$estudiante->Estados->first();
+
+        $Matriculas_Pivote=$estudiante->Matriculas_Pivote->first();
+
+        $Matriculas=$estudiante->Matriculas->first();
+
+        $Anomalias=$estudiante->Anomalias->first();
+
+		if ($User_Estudiante || $User_Representante || $Estados || $Matriculas_Pivote || $Matriculas || $Anomalias)
+		{
+			$estudiante->delete();
+			
+			return response()->json([
+				'status'=>true,
+				'message'=>'El estudiante contaba con relaciones. Se ha eliminado el estudiante correctamente.'
+			],200);
+			
+		}   
+
+		$estudiante->delete();
+
+        return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado el estudiante correctamente.'
+		],200);
     }
 }

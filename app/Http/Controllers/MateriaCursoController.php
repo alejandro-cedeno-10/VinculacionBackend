@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Materia;
+use App\materia;
 
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -27,8 +27,8 @@ class MateriaCursoController extends Controller
     public function index()
     {
         //
-        $materia = QueryBuilder::for(Materia::class)
-            ->allowedIncludes('Cursos')
+        $materia = QueryBuilder::for(materia::class)
+            ->allowedIncludes('cursos')
             ->get();
 
         return response()->json([
@@ -70,7 +70,7 @@ class MateriaCursoController extends Controller
         $materia=Cache::remember('materias',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return Materia::find($id);  
+			return materia::find($id);  
 		});
 
         if(!$materia)

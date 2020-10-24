@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\matricula;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MatriculaController extends Controller
 {
@@ -14,7 +15,15 @@ class MatriculaController extends Controller
      */
     public function index()
     {
-        //
+        $matricula=Cache::remember('matriculas',30/60, function()
+            {
+                // Caché válida durante 30 segundos.
+                return matricula::all();
+            });
+           
+        return response()->json([
+			'status'=>true,
+			'data'=>$matricula], 200);
     }
 
     /**
@@ -35,7 +44,29 @@ class MatriculaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'idMatricula'     => 'required|string|max:10',
+            'idRepresentante'     => 'required|string|max:10|exists:representantes,idRepresentante',
+            'idCurso'     => 'required|numeric|exists:cursos,idCurso',
+            'idParalelo'     => 'required|numeric|exists:paralelos,idParalelo',
+            'idEspecialidad'     => 'required|numeric|exists:especialidads,idEspecialidad',
+            'idEstudiante'     => 'required|string|max:10|exists:estudiantes,idEstudiante',
+            'idPeriodoLectivo'     => 'required|numeric|exists:periodo_lectivos,idPeriodoLectivo',
+            'folder'     => 'required|string|max:80'                     
+        ]);
+
+        $matricula=Cache::remember('matriculas',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return matricula::create($request->all());
+            });
+	
+		$matricula->save();
+	
+        return response()->json(['data'=>$matricula,
+            'message' => 'Matricula Creada'], 201)
+            ->header('Location', env('APP_URL').'matriculas/'.$matricula->idMatricula)
+            ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -44,9 +75,26 @@ class MatriculaController extends Controller
      * @param  \App\matricula  $matricula
      * @return \Illuminate\Http\Response
      */
-    public function show(matricula $matricula)
+    public function show($id)
     {
-        //
+        $matricula=Cache::remember('matriculas',30/60, function() use ($id)
+		{
+			// Caché válida durante 30 segundos.
+			return matricula::find($id);
+		});
+
+		if(!$matricula)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra una matricula con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$matricula],200);
     }
 
     /**
@@ -67,9 +115,83 @@ class MatriculaController extends Controller
      * @param  \App\matricula  $matricula
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, matricula $matricula)
+    public function update(Request $request, $id)
     {
-        //
+        $matricula=Cache::remember('matriculas',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return matricula::find($id);
+		});
+
+		if(!$matricula)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra una matricula con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+		
+		if($request->method() === 'PUT')
+		{
+            $request->validate([
+                'idMatricula'     => 'required|string|max:10',
+                'folder'     => 'required|string|max:80' 
+            ]);
+			
+            $matricula->idMatricula = $request->idMatricula;
+            $matricula->folder = $request->folder;
+            		
+			$matricula->save();
+
+			return response()->json([
+				'status'=>true,
+				'data'=>$matricula],200)
+				->header('Location', env('APP_URL').'matriculas/'.$matricula->idMatricula)
+				->header('Content-Type', 'application/json');
+		}else{
+			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
+			$bandera = false;
+
+			if ($request->idMatricula!= null)
+			{
+				$request->validate([
+                    'idMatricula'     => 'required|string|max:10'
+                ]);
+
+				$matricula->idMatricula = $request->idMatricula;
+				$bandera=true;
+            }
+            
+            if ($request->folder!= null)
+			{
+				$request->validate([
+                    'folder'     => 'required|string|max:80' 
+                ]);
+
+				$matricula->folder = $request->folder;
+				$bandera=true;
+			}
+			
+			if ($bandera)
+			{
+				// Almacenamos en la base de datos el registro.
+				$matricula->save();
+				return response()->json([
+					'status'=>true,
+					'data'=>$matricula],200)
+					->header('Location', env('APP_URL').'matriculas/'.$matricula->idMatricula)
+					->header('Content-Type', 'application/json');
+			}
+			else
+			{
+				return response()->json([
+					'errors'=>array(['
+					status'=>false,
+					'message'=>'No se ha modificado ningún dato.'])
+				],200);
+			}		
+		}
     }
 
     /**
@@ -78,8 +200,55 @@ class MatriculaController extends Controller
      * @param  \App\matricula  $matricula
      * @return \Illuminate\Http\Response
      */
-    public function destroy(matricula $matricula)
+    public function destroy($id)
     {
-        //
+        $matricula=Cache::remember('matriculas',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return matricula::find($id);  
+		});
+		
+		if(!$matricula)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra una matricula con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+        $Matricula_Estado=$matricula->Matricula_Estado->first();
+        
+        $Matricula_Estudiante=$matricula->Matricula_Estudiante->first();
+        
+        $Estudiante=$matricula->Estudiante->first();
+                
+        $Representante=$matricula->Representante->first();
+
+		$Curso=$matricula->Curso->first();
+
+        $Paralelo=$matricula->Paralelo->first();
+
+        $Especialidad=$matricula->Especialidad->first();
+
+        $Periodo_Lectivo=$matricula->Periodo_Lectivo->first();
+             
+		if ($Matricula_Estado || $Matricula_Estudiante || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $Periodo_Lectivo)
+		{
+			$matricula->delete();
+			
+			return response()->json([
+				'status'=>true,
+				'message'=>'La matricula contaba con relaciones. Se ha eliminado la matricula correctamente.'
+			],200);
+			
+		}   
+
+		$matricula->delete();
+
+        return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado la matricula correctamente.'
+		],200);
     }
 }

@@ -1,32 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\reporte_estudiante;
 use Illuminate\Http\Request;
 
+use App\reporte_estudiante;
+use Illuminate\Support\Facades\Cache;
 class ReporteEstudianteController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+{    
     /**
      * Store a newly created resource in storage.
      *
@@ -35,51 +15,78 @@ class ReporteEstudianteController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $reporte_estudiante=Cache::remember('reporte_estudiantes',15/60, function() use ($request)
+		{
+			// Caché válida durante 15 segundos.
+            return reporte_estudiante::where([
+                'idEstudiante' => $request->idEstudiante,
+                'idAnomalia' => $request->idAnomalia])->first();
+        });
+        
+		if($reporte_estudiante)
+		{
+			return response()->json(
+				['errors'=>array(['status'=>false,
+				'message'=>'Ya existe esta relacion de reporte_estudiante',
+                'identificador_1'=>$request->idEstudiante,
+                'identificador_2'=>$request->idAnomalia               
+			])],200);
+        }
+        
+		$request->validate([
+            'idEstudiante'     => 'required|string|max:10|exists:estudiantes,idEstudiante',
+            'idAnomalia'     => 'required|numeric|exists:anomalias,idAnomalia'           
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\reporte_estudiante  $reporte_estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function show(reporte_estudiante $reporte_estudiante)
-    {
-        //
+        $reporte_estudiante=Cache::remember('reporte_estudiantes',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return reporte_estudiante::create($request->all());
+            });
+	
+		$reporte_estudiante->save();
+	
+        return response()->json(['data'=>$reporte_estudiante,
+            'message' => 'Relacion Reporte_Estudiante Creada'], 201);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\reporte_estudiante  $reporte_estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(reporte_estudiante $reporte_estudiante)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\reporte_estudiante  $reporte_estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, reporte_estudiante $reporte_estudiante)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\reporte_estudiante  $reporte_estudiante
      * @return \Illuminate\Http\Response
      */
-    public function destroy(reporte_estudiante $reporte_estudiante)
+    public function destroy($id, $id2)
     {
-        //
+        $reporte_estudiante=Cache::remember('reporte_estudiante',15/60, function() use ($id,$id2)
+		{
+			// Caché válida durante 15 segundos.
+			return reporte_estudiante::where([
+                'idEstudiante' => $id, 
+                'idAnomalia' => $id2])->first();
+        });
+        
+		if(!$reporte_estudiante)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un reporte_estudiante con ese identificador.',
+                'identificador_1'=>$id,
+                'identificador_2'=>$id2
+			])],404);
+		}
+
+        $reporte_estudiante=Cache::remember('reporte_estudiantes',15/60, function() use ($id,$id2)
+		{
+			// Caché válida durante 15 segundos.
+			reporte_estudiante::where([
+                'idEstudiante' => $id, 
+                'idAnomalia' => $id2])->delete();
+        });
+		
+		return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado el reporte_estudiante correctamente.'
+		],200);
     }
 }

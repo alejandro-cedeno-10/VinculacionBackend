@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\cuestionario_pregunta;
+use App\cuestionario;
+
+use Spatie\QueryBuilder\QueryBuilder;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CuestionarioPreguntaController extends Controller
 {
+    // Configuramos en el constructor del 
+	// Controlador la autenticación usando el Middleware auth.basic,
+    public function __construct()
+	{
+		/* $this->middleware('auth',['only'=>['index']]); */ 
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,14 @@ class CuestionarioPreguntaController extends Controller
      */
     public function index()
     {
-        //
+        $cuestionario = QueryBuilder::for(cuestionario::class)
+            ->allowedIncludes('preguntas')
+            ->get();
+
+        return response()->json([
+			'status'=>true,
+            'data'=>$cuestionario
+        ], 200);
     }
 
     /**
@@ -41,21 +60,42 @@ class CuestionarioPreguntaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\cuestionario_pregunta  $cuestionario_pregunta
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(cuestionario_pregunta $cuestionario_pregunta)
+    public function show($id)
     {
         //
+        $cuestionario=Cache::remember('cuestionarios',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return cuestionario::find($id);  
+		});
+
+        if(!$cuestionario)
+        {
+            return response()->json(
+                ['errors'=>array(['code'=>404,
+                'message'=>'No se encuentra un cuestionario con ese identificador.',
+                'identificador'=>$id
+            ])],404);
+        }
+
+        $preguntas=$cuestionario->Preguntas;
+
+        return response()->json([
+            'status'=>true,
+            'data'=>$cuestionario
+        ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\cuestionario_pregunta  $cuestionario_pregunta
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(cuestionario_pregunta $cuestionario_pregunta)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +104,10 @@ class CuestionarioPreguntaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\cuestionario_pregunta  $cuestionario_pregunta
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, cuestionario_pregunta $cuestionario_pregunta)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +115,10 @@ class CuestionarioPreguntaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\cuestionario_pregunta  $cuestionario_pregunta
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(cuestionario_pregunta $cuestionario_pregunta)
+    public function destroy($id)
     {
         //
     }

@@ -54,39 +54,39 @@ class estudiante extends Model
     //  etc..
     
     
-    public function Estudiante_Persona()
+    public function User_Estudiante()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\persona','idEstudiante','idPersona');
     }
     
-    public function Representante_Persona()
+    public function User_Representante()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\persona','idRepresentante','idPersona');
     }
     
-    public function Estudiante_Estado()
+    public function Estados()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\estado','estado_estudiantes','idEstudiante','idEstado')
                 ->withPivot('fecha','idMatricula','descripcion');
     }
     
-    public function Estudiante_Matricula()
+    public function Matriculas_Pivote()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\matricula','estado_estudiantes','idEstudiante','idMatricula')
                 ->withPivot('fecha','idEstado','descripcion');
     }
     
-    public function Matricula()
+    public function Matriculas()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\matricula','idEstudiante','idEstudiante');
     }
 
-    public function Anomalia()
+    public function Anomalias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\anomalia','reporte_estudiantes','idEstudiante','idAnomalia');

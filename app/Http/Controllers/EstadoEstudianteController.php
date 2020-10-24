@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\estado_estudiante;
+use App\estado;
+
+use Spatie\QueryBuilder\QueryBuilder;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class EstadoEstudianteController extends Controller
 {
+    // Configuramos en el constructor del 
+	// Controlador la autenticación usando el Middleware auth.basic,
+    public function __construct()
+	{
+		/* $this->middleware('auth',['only'=>['index']]); */ 
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,14 @@ class EstadoEstudianteController extends Controller
      */
     public function index()
     {
-        //
+        $estado = QueryBuilder::for(estado::class)
+            ->allowedIncludes('estudiantes')
+            ->get();
+
+        return response()->json([
+			'status'=>true,
+            'data'=>$estado
+        ], 200);
     }
 
     /**
@@ -41,21 +60,42 @@ class EstadoEstudianteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\estado_estudiante  $estado_estudiante
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(estado_estudiante $estado_estudiante)
+    public function show($id)
     {
         //
+        $estado=Cache::remember('estados',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return estado::find($id);  
+		});
+
+        if(!$estado)
+        {
+            return response()->json(
+                ['errors'=>array(['code'=>404,
+                'message'=>'No se encuentra un estado con ese identificador.',
+                'identificador'=>$id
+            ])],404);
+        }
+
+        $estudiantes=$estado->Estudiantes;
+
+        return response()->json([
+            'status'=>true,
+            'data'=>$estado
+        ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\estado_estudiante  $estado_estudiante
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(estado_estudiante $estado_estudiante)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +104,10 @@ class EstadoEstudianteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\estado_estudiante  $estado_estudiante
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, estado_estudiante $estado_estudiante)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +115,10 @@ class EstadoEstudianteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\estado_estudiante  $estado_estudiante
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(estado_estudiante $estado_estudiante)
+    public function destroy($id)
     {
         //
     }

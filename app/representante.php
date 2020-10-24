@@ -54,13 +54,13 @@ class representante extends Model
     //  etc..
     
     
-    public function Persona()
+    public function User()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\persona','idRepresentante','idPersona');
     }
     
-    public function Matricula()
+    public function Matriculas()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\matricula','idRepresentante','idRepresentante');

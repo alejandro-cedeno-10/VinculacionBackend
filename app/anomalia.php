@@ -52,7 +52,7 @@ class anomalia extends Model
         return $this->belongsTo('App\materia_profesor','idMateriaProfesor','idMateriaProfesor');
     }
 
-    public function Profesor()
+    public function Profesores()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\profesor','diagnostico_tutors','idAnomalia','idProfesor')
@@ -65,7 +65,7 @@ class anomalia extends Model
         return $this->belongsTo('App\subcategoria','idSubCategoria','idSubCategoria');
     }
 
-    public function Estudiante()
+    public function Estudiantes()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\estudiante','reporte_estudiantes','idAnomalia','idEstudiante');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\anomalia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AnomaliaController extends Controller
 {
@@ -14,7 +15,15 @@ class AnomaliaController extends Controller
      */
     public function index()
     {
-        //
+        $anomalia=Cache::remember('anomalias',30/60, function()
+            {
+                // Caché válida durante 30 segundos.
+                return anomalia::all();
+            });
+       
+        return response()->json([
+            'status'=>true,
+            'data'=>$anomalia], 200);
     }
 
     /**
@@ -35,7 +44,26 @@ class AnomaliaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'idMateriaProfesor'     => 'required|numeric|exists:materia_profesors,idMateriaProfesor',
+            'idSubcategoria'     => 'required|numeric|exists:subcategorias,idSubcategoria',   
+            'afectado'     => 'required|string|max:30',
+            'descripcion'     => 'required|string|max:150',
+            'valoracion'     => 'required|string|max:1'                   
+        ]);
+
+        $anomalia=Cache::remember('anomalias',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return anomalia::create($request->all());
+            });
+	
+		$anomalia->save();
+	
+        return response()->json(['data'=>$anomalia,
+            'message' => 'Anomalia Creada'], 201)
+            ->header('Location', env('APP_URL').'anomalias/'.$anomalia->idAnomalia)
+            ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -44,9 +72,26 @@ class AnomaliaController extends Controller
      * @param  \App\anomalia  $anomalia
      * @return \Illuminate\Http\Response
      */
-    public function show(anomalia $anomalia)
+    public function show($id)
     {
-        //
+        $anomalia=Cache::remember('anomalias',30/60, function() use ($id)
+		{
+			// Caché válida durante 30 segundos.
+			return anomalia::find($id);
+		});
+
+		if(!$anomalia)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra una anomalia con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$anomalia],200);
     }
 
     /**
@@ -67,9 +112,98 @@ class AnomaliaController extends Controller
      * @param  \App\anomalia  $anomalia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, anomalia $anomalia)
+    public function update(Request $request, $id)
     {
-        //
+        $anomalia=Cache::remember('anomalias',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return anomalia::find($id);
+		});
+
+		if(!$anomalia)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra una anomalia con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+		
+		if($request->method() === 'PUT')
+		{
+            $request->validate([
+                'afectado'     => 'required|string|max:30',
+                'descripcion'     => 'required|string|max:150',
+                'valoracion'     => 'required|string|max:11' 
+            ]);
+			
+			$anomalia->afectado = $request->afectado;
+            $anomalia->descripcion = $request->descripcion;
+            $anomalia->valoracion = $request->valoracion;
+            			
+            $anomalia->save();
+
+			return response()->json([
+				'status'=>true,
+				'data'=>$anomalia],200)
+				->header('Location', env('APP_URL').'anomalias/'.$anomalia->idAnomalia)
+				->header('Content-Type', 'application/json');
+
+
+		}else{
+			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
+			$bandera = false;
+			
+            if ($request->afectado!= null)
+			{
+				$request->validate([
+					'afectado'     => 'required|string|max:30'
+				]);
+		
+				$anomalia->afectado = $request->afectado;
+				$bandera=true;
+            }
+            
+            if ($request->descripcion!= null)
+			{
+				$request->validate([
+					'descripcion'     => 'required|string|max:150'
+				]);
+		
+				$anomalia->descripcion = $request->descripcion;
+				$bandera=true;
+			}
+
+			if ($request->validacion!= null)
+			{
+				$request->validate([
+                    'validación'     => 'required|string|max:11'
+				]);
+	
+				$anomalia->validacion = $request->validacion;
+				$bandera=true;
+			}
+
+			if ($bandera)
+			{
+				// Almacenamos en la base de datos el registro.
+				$anomalia->save();
+				return response()->json([
+					'status'=>true,
+					'data'=>$anomalia],200)
+					->header('Location', env('APP_URL').'anomalias/'.$anomalia->idAnomalia)
+					->header('Content-Type', 'application/json');
+			}
+			else
+			{
+				return response()->json([
+					'errors'=>array(['
+					status'=>false,
+					'message'=>'No se ha modificado ningún dato.'])
+				],200);
+			}
+		
+		}
     }
 
     /**
@@ -78,8 +212,47 @@ class AnomaliaController extends Controller
      * @param  \App\anomalia  $anomalia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(anomalia $anomalia)
+    public function destroy($id)
     {
-        //
+        $anomalia=Cache::remember('anomalias',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return anomalia::find($id);  
+		});
+		
+		if(!$anomalia)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra una anomalia con ese identificador.',
+				'identificador'=>$id
+			])],404);
+		}
+
+		$Materia_Profesor=$anomalia->Materia_Profesor->first();
+
+		$Profesores=$anomalia->Profesores->first();
+
+        $SubCategoria=$anomalia->SubCategoria->first();
+        
+        $Estudiantes=$anomalia->Estudiantes->first();
+        
+		if ($Materia_Profesor || $Profesores || $SubCategoria || $Estudiantes)
+		{
+			$anomalia->delete();
+			
+			return response()->json([
+				'status'=>true,
+				'message'=>'La anomalia contaba con relaciones. Se ha eliminado la anomalia correctamente.'
+			],200);
+			
+		}   
+
+		$anomalia->delete();
+
+        return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado la anomalia correctamente.'
+		],200);
     }
 }

@@ -54,14 +54,14 @@ class matricula extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function Matricula_Estado()
+    public function Estados()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\estado','estado_estudiantes','idMatricula','idEstado')
                 ->withPivot('fecha','idEstudiante','descripcion');
     }
     
-    public function Matricula_Estudiante()
+    public function Estudiantes_Pivote()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\estudiante','estado_estudiantes','idMatricula','idEstudiante')

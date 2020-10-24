@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Paralelo;
+use App\paralelo;
 
 use Spatie\QueryBuilder\QueryBuilder;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ParaleloCursoController extends Controller
 {
@@ -26,10 +26,8 @@ class ParaleloCursoController extends Controller
      */
     public function index()
     {
-       
-        
-        $paralelo = QueryBuilder::for(Paralelo::class)
-            ->allowedIncludes('Cursos')
+        $paralelo = QueryBuilder::for(paralelo::class)
+            ->allowedIncludes('cursos')
             ->get();
 
         return response()->json([
@@ -71,7 +69,7 @@ class ParaleloCursoController extends Controller
         $paralelo=Cache::remember('paralelos',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return Paralelo::find($id);  
+			return paralelo::find($id);  
 		});
 
         if(!$paralelo)
@@ -83,7 +81,7 @@ class ParaleloCursoController extends Controller
             ])],404);
         }
 
-        $Cursos=$paralelo->Cursos;
+        $cursos=$paralelo->Cursos;
 
         return response()->json([
             'status'=>true,

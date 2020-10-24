@@ -1,32 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\diagnostico_tutor;
 use Illuminate\Http\Request;
 
+use App\diagnostico_tutor;
+use Illuminate\Support\Facades\Cache;
+
 class DiagnosticoTutorController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+{  
     /**
      * Store a newly created resource in storage.
      *
@@ -35,51 +16,78 @@ class DiagnosticoTutorController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $diagnostico_tutor=Cache::remember('diagnostico_tutors',15/60, function() use ($request)
+		{
+			// Caché válida durante 15 segundos.
+            return diagnostico_tutor::where([
+                'idAnomalia' => $request->idAnomalia,
+                'idProfesor' => $request->idProfesor])->first();
+        });
+        
+		if($diagnostico_tutor)
+		{
+			return response()->json(
+				['errors'=>array(['status'=>false,
+				'message'=>'Ya existe esta relacion de diagnostico_tutor',
+                'identificador_1'=>$request->idAnomalia,
+                'identificador_2'=>$request->idProfesor               
+			])],200);
+        }
+        
+		$request->validate([
+            'idAnomalia'     => 'required|numeric|exists:anomalias,idAnomalia',
+            'idProfesor'     => 'required|string|max:10|exists:profesors,idProfesor'           
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\diagnostico_tutor  $diagnostico_tutor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(diagnostico_tutor $diagnostico_tutor)
-    {
-        //
+        $diagnostico_tutor=Cache::remember('diagnostico_tutors',15/60, function() use ($request)
+            {
+                // Caché válida durante 15 segundos.
+                return diagnostico_tutor::create($request->all());
+            });
+	
+		$diagnostico_tutor->save();
+	
+        return response()->json(['data'=>$diagnostico_tutor,
+            'message' => 'Relacion Diagnostico_Tutor Creada'], 201);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\diagnostico_tutor  $diagnostico_tutor
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(diagnostico_tutor $diagnostico_tutor)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\diagnostico_tutor  $diagnostico_tutor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, diagnostico_tutor $diagnostico_tutor)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\diagnostico_tutor  $diagnostico_tutor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(diagnostico_tutor $diagnostico_tutor)
+    public function destroy($id, $id2)
     {
-        //
+        $diagnostico_tutor=Cache::remember('diagnostico_tutors',15/60, function() use ($id,$id2)
+		{
+			// Caché válida durante 15 segundos.
+			return diagnostico_tutor::where([
+                'idAnomalia' => $id, 
+                'idProfesor' => $id2])->first();
+        });
+        
+		if(!$diagnostico_tutor)
+		{
+			return response()->json(
+				['errors'=>array(['code'=>404,
+				'message'=>'No se encuentra un diagnostico_tutor con ese identificador.',
+                'identificador_1'=>$id,
+                'identificador_2'=>$id2
+			])],404);
+		}
+
+        $diagnostico_tutor=Cache::remember('diagnostico_tutors',15/60, function() use ($id,$id2)
+		{
+			// Caché válida durante 15 segundos.
+			diagnostico_tutor::where([
+                'idAnomalia' => $id, 
+                'idProfesor' => $id2])->delete();
+        });
+		
+		return response()->json([
+			'status'=>true,
+			'message'=>'Se ha eliminado el diagnostico_tutor correctamente.'
+		],200);
     }
 }

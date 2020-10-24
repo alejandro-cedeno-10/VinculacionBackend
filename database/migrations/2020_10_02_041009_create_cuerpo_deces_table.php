@@ -20,8 +20,6 @@ class CreateCuerpoDecesTable extends Migration
             $table->timestamps();
 
             $table->foreign('idPersona')->references('idPersona')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('idPeriodoLectivo');
-            $table->foreign('idPeriodoLectivo')->references('idPeriodoLectivo')->on('periodo_lectivos')->onDelete('cascade')->onUpdate('cascade');            
             $table->primary('idPersona');            
         });
     }

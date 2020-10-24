@@ -46,7 +46,7 @@ class tipo_asignatura extends Model
     //  etc..
     
     
-    public function Materia()
+    public function Materias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\materia','idTipoAsignatura','idTipoAsignatura');

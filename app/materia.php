@@ -45,7 +45,7 @@ class materia extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function Profesor()
+    public function Profesores()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\profesor','materia_profesors','idMateria','idProfesor')
@@ -53,7 +53,7 @@ class materia extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Curso()
+    public function Cursos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\curso','materia_profesors','idMateria','idCurso')
@@ -61,7 +61,7 @@ class materia extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Paralelo()
+    public function Paralelos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\paralelo','materia_profesors','idMateria','idParalelo')
@@ -69,7 +69,7 @@ class materia extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Especialidad()
+    public function Especialidades()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\especialidad','materia_profesors','idMateria','idEspecialidad')
@@ -77,7 +77,7 @@ class materia extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Periodo_Lectivo()
+    public function Periodo_Lectivos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\periodo_lectivo','materia_profesors','idMateria','idPeriodoLectivo')
