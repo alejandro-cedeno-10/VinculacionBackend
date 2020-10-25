@@ -9,7 +9,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class EspecialidadMatriculaController extends Controller
+class EspecialidadCuestionarioController extends Controller
 {
     // Configuramos en el constructor del 
 	// Controlador la autenticación usando el Middleware auth.basic,

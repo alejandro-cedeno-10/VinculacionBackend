@@ -14,12 +14,11 @@ class CreateTipoAsignaturasTable extends Migration
     public function up()
     {
         Schema::create('tipo_asignaturas', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idTipoAsignatura');
             $table->string('nombreTipoAsignatura');
             
-            $table->timestamps();
-
-            $table->primary('idTipoAsignatura');            
+            $table->timestamps();       
         });
     }
 

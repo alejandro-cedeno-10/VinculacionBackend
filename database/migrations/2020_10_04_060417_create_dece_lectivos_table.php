@@ -14,6 +14,7 @@ class CreateDeceLectivosTable extends Migration
     public function up()
     {
         Schema::create('dece_lectivos', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->char('idPersona',10);
 
             $table->timestamps();

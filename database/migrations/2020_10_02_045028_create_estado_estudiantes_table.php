@@ -14,6 +14,7 @@ class CreateEstadoEstudiantesTable extends Migration
     public function up()
     {
         Schema::create('estado_estudiantes', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->char('idEstudiante',10);
             $table->date('fecha');
             $table->char('idMatricula',10);

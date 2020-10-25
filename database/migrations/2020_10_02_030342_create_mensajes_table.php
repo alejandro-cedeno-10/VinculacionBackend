@@ -14,6 +14,7 @@ class CreateMensajesTable extends Migration
     public function up()
     {
         Schema::create('mensajes', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idMensaje');
             $table->char('idPersona',10);
             $table->char('receptor',10);
@@ -22,8 +23,7 @@ class CreateMensajesTable extends Migration
             $table->timestamps();
 
             $table->foreign('idPersona')->references('idPersona')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('receptor')->references('idPersona')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->primary('idMensaje');                       
+            $table->foreign('receptor')->references('idPersona')->on('users')->onDelete('cascade')->onUpdate('cascade');                   
         });
     }
 

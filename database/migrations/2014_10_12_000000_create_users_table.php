@@ -20,13 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('apellidoMaterno');
             $table->string('nombres');
             $table->string('direccion');
-            $table->string('telefono');
+            $table->string('telefono')->nullable();
             $table->enum('sexo', ['M', 'F']);
             $table->date('fechaNacimiento');
             $table->enum('estadoCivil', ['S', 'C', 'V', 'D', 'U']);
             
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('email')->unique()->nullable();
+            $table->string('password')->nullable();
             $table->boolean('active')->default(false);
             $table->string('activation_token')->nullable();
             $table->string('avatar')->default('default.jpg');       

@@ -14,6 +14,7 @@ class CreateMatriculasTable extends Migration
     public function up()
     {
         Schema::create('matriculas', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->char('idMatricula',10);
             $table->char('idRepresentante',10);
             $table->char('idEstudiante',10);

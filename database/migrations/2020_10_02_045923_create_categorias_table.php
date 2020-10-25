@@ -14,12 +14,13 @@ class CreateCategoriasTable extends Migration
     public function up()
     {
         Schema::create('categorias', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->id('idCategoria');
             $table->string('nombreCategoria');
             
             $table->timestamps();
 
-            $table->primary('idCategoria');
         });
     }
 

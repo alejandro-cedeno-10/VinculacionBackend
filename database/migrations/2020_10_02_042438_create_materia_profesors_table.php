@@ -14,6 +14,7 @@ class CreateMateriaProfesorsTable extends Migration
     public function up()
     {
         Schema::create('materia_profesors', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idMateriaProfesor');
             $table->char('idProfesor',10);
             $table->integer('numeroHoras');
@@ -37,7 +38,6 @@ class CreateMateriaProfesorsTable extends Migration
             $table->foreignId('idMateria');
             $table->foreign('idMateria')->references('idMateria')->on('materias')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->primary('idMateriaProfesor');
         });
     }
 

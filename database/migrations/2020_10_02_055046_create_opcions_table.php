@@ -14,6 +14,7 @@ class CreateOpcionsTable extends Migration
     public function up()
     {
         Schema::create('opcions', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idOpcion');
             $table->string('opcion');
             
@@ -21,8 +22,7 @@ class CreateOpcionsTable extends Migration
 
             $table->foreignId('idPregunta');
             $table->foreign('idPregunta')->references('idPregunta')->on('preguntas')->onDelete('cascade')->onUpdate('cascade');
-            
-            $table->primary('idOpcion');
+
         });
     }
 

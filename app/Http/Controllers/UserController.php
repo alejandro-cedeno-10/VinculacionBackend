@@ -14,9 +14,9 @@ class UserController extends Controller
 	// controlador la autenticación usando el Middleware auth.basic,
     public function __construct()
 	{	
-		$this->middleware('auth:api');  
+		/* $this->middleware('auth:api');  
 	    $this->middleware('role:SuperAdmin',['only'=>['index']]); 
-		$this->middleware('role:cliente|SuperAdmin',['only'=>['show']]);  
+		$this->middleware('role:cliente|SuperAdmin',['only'=>['show']]);   */
     }
  
 	/**
@@ -109,21 +109,25 @@ class UserController extends Controller
 		if($request->method() === 'PUT')
 		{
 			$request->validate([
-				'name'     => 'required|string|max:30',
-				'lastname'     => 'required|string|max:30',
-				'email'    => 'required|string|email|unique:users,email',
-				'descripcion'     => 'nullable|string',
-				'password' => 'required|string|confirmed'
+				'apellidoPaterno'     => 'required|string|max:30',
+				'apellidoMaterno'     => 'required|string|max:30',
+				'nombres'     => 'required|string|max:30',
+				'direccion'     => 'required|string',
+				'telefono'     => 'nullable|string|min:10|max:10',
+				'sexo'         =>   'in:M,F',
+				'fechaNacimiento'         =>  'required|date',
+				'estadoCivil'         =>   'in:S,C,V,D,U'
 			]);
 
-			
-			$user->name = $request->name;
-			$user->lastname = $request->lastname;
-			$user->descripcion = $request->descripcion;
 
-			$user->password=bcrypt($request->password);
-			/* $user->notify(new PasswordResetSuccess($user->password)); */
-
+			$user->apellidoPaterno = $request->apellidoPaterno;
+			$user->apellidoMaterno = $request->apellidoMaterno;
+			$user->nombres = $request->nombres;
+			$user->direccion = $request->direccion;
+			$user->telefono = $request->telefono;
+			$user->sexo = $request->sexo;
+			$user->fechaNacimiento = $request->fechaNacimiento;			
+			$user->estadoCivil = $request->estadoCivil;
 
 			// Almacenamos en la base de datos el registro.
 			$user->save();
@@ -139,43 +143,84 @@ class UserController extends Controller
 			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
 			$bandera = false;
 
-			if ($request->name!= null)
+			if ($request->apellidoPaterno!= null)
 			{
 				$request->validate([
-					'name'     => 'required|string|max:30',
+					'apellidoPaterno'     => 'required|string|max:30',
 				]);
 
-				$user->name = $request->name ;
+				$user->apellidoPaterno = $request->apellidoPaterno ;
 				$bandera=true;
 			}
 
-			if ($request->lastname!= null)
+			if ($request->apellidoMaterno!= null)
 			{
 				$request->validate([
-					'lastname'     => 'required|string|max:30',
+					'apellidoMaterno'     => 'required|string|max:30',
 				]);
 		
-				$user->lastname = $request->lastname;
+				$user->apellidoMaterno = $request->apellidoMaterno;
 				$bandera=true;
 			}
 
-			if ($request->email!= null)
+			if ($request->nombres!= null)
 			{
 				$request->validate([
-					'email'    => 'required|string|email|unique:users,email',
+					'nombres'    => 'required|string|email|unique:users,email',
 				]);
 		
-				$user->email = $request->email;
+				$user->nombres = $request->nombres;
 				$bandera=true;
 			}
 
-			if ($request->descripcion!= null)
+			if ($request->direccion!= null)
 			{
 				$request->validate([
-					'descripcion'     => 'required|string',
+					'direccion'     => 'required|string',
 				]);
 		
-				$user->descripcion = $request->descripcion;
+				$user->direccion = $request->direccion;
+				$bandera=true;
+			}
+
+			if ($request->telefono!= null)
+			{
+				$request->validate([
+					'telefono'     => 'nullable|string|min:10|max:10',
+				]);
+		
+				$user->telefono = $request->telefono;
+				$bandera=true;
+			}
+
+			if ($request->sexo!= null)
+			{
+				$request->validate([
+					'sexo'         =>   'in:M,F',
+				]);
+		
+				$user->sexo = $request->sexo;
+				$bandera=true;
+			}
+
+			
+			if ($request->fechaNacimiento!= null)
+			{
+				$request->validate([
+					'fechaNacimiento'         =>  'required|date',
+				]);
+		
+				$user->fechaNacimiento = $request->fechaNacimiento;
+				$bandera=true;
+			}
+			
+			if ($request->estadoCivil!= null)
+			{
+				$request->validate([
+					'estadoCivil'         =>   'in:S,C,V,D,U'
+				]);
+		
+				$user->estadoCivil = $request->estadoCivil;
 				$bandera=true;
 			}
 
@@ -185,9 +230,16 @@ class UserController extends Controller
 					'password' => 'required|string|confirmed',
 				]);
 
-				$user->password=bcrypt($request->password);
-				$bandera=true;
-				/* $user->notify(new PasswordResetSuccess($user->password)); */
+				if($user->password==(bcrypt($request->password))){
+					$user->password=bcrypt($request->password);
+					$bandera=true;
+				}else{
+					return response()->json([
+						'errors'=>array(['
+						status'=>false,
+						'message'=>'Contraseña incorrecta'])
+					],200);
+				}
 			}
 
 			if ($bandera)
@@ -276,20 +328,6 @@ class UserController extends Controller
 			$dirimgs = public_path().'/uploads/avatars/'.$user->avatar;
 			@unlink($dirimgs);
 		}
-
-		$Cursos=$user->Cursos->first();
-
-		$user->delete();
-
-		if($Cursos)
-		{
-			$user->delete();
-			return response()->json([
-				'status'=>true,
-				'message'=>'El usuario contaba con relaciones. Se ha eliminado el usuario correctamente.'
-			],200);
-			
-		}   
 
 		$user->delete();
 

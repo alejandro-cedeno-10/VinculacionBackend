@@ -14,6 +14,7 @@ class CreateCuestionariosTable extends Migration
     public function up()
     {
         Schema::create('cuestionarios', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idCuestionario');
             $table->char('idPersona',10);
             
@@ -32,8 +33,7 @@ class CreateCuestionariosTable extends Migration
 
             $table->foreignId('idPeriodoLectivo');
             $table->foreign('idPeriodoLectivo')->references('idPeriodoLectivo')->on('periodo_lectivos')->onDelete('cascade')->onUpdate('cascade');
-            
-            $table->primary('idCuestionario');
+
         });
     }
 

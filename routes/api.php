@@ -24,7 +24,6 @@ Route::group([
     ], function () {
         Route::post('login', 'AuthController@login');
         Route::post('signup', 'AuthController@signup');
-        Route::get('signup/activate/{token}', 'AuthController@signupActivate');
 
     Route::group([
         ], function() {
@@ -32,14 +31,6 @@ Route::group([
             Route::get('/user', 'AuthController@user');
     });
 });
-
-Route::group([    
-    'prefix' => 'password'
-    ], function () {    
-        Route::post('create', 'PasswordResetController@create');
-        Route::get('find/{token}', 'PasswordResetController@find');
-        Route::post('reset', 'PasswordResetController@reset');
-});   
 
 Route::group([
     ], function () { 
@@ -49,11 +40,105 @@ Route::group([
         Route::post('users_avatar', 'UserController@update_avatar');
 }); 
  
+Route::resource('cursos','CategoriaController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','CuerpoDeceController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','CuestionarioController',[ 
+    'except'=>['create','edit']]
+);
+
 Route::resource('cursos','CursoController',[ 
     'except'=>['create','edit']]
 );
 
-Route::group([ 
+Route::resource('cursos','EspecialidadController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','EstadoController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','EspecialidadController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','EstadoController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','EstudianteController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','MateriaController',[ 
+    'except'=>['create','edit']]
+);
+
+
+Route::resource('cursos','MatriculaController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','MensajesController',[ 
+    'except'=>['create','edit']]
+);
+
+
+Route::resource('cursos','OpcionController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','ParaleloController',[ 
+    'except'=>['create','edit']]
+);
+
+
+Route::resource('cursos','PeriodoLectivoController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','PreguntaController',[ 
+    'except'=>['create','edit']]
+);
+
+
+Route::resource('cursos','PeriodoLectivoController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','PreguntaController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','ProfesorController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','RepresentanteController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','RespuestaController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','SubcategoriaController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('cursos','TipoAsignaturaController',[ 
+    'except'=>['create','edit']]
+);
+
+
+
+/* Route::group([ 
 ], function () { 
     Route::resource('users.cursos','UsersCursosController',[ 
         'only'=>['store','destroy']]
@@ -68,11 +153,6 @@ Route::group([
     );
 });  
 
-
-Route::resource('paralelos','ParaleloController',[ 
-    'except'=>['create','edit']]
-);
-
 Route::group([ 
     ], function () { 
         Route::resource('cursos.paralelos','CursosParalelosController',[ 
@@ -86,88 +166,8 @@ Route::group([
         Route::resource('paraleloCurso','ParaleloCursoController',[ 
             'only'=>['index','show']]
         );
-}); 
+});  */
 
-
-Route::group([ 
-], function () { 
-    Route::resource('materias','MateriaController',[ 
-        'except'=>['create','edit']]
-    );
-    Route::post('materias_imagen', 'MateriaController@update_imagen');
-});
-
-
-Route::group([ 
-], function () { 
-    Route::resource('cursos.materias','CursosMateriasController',[ 
-        'only'=>['store','destroy']]
-    );
-
-    Route::resource('cursoMateria','CursoMateriaController',[ 
-        'only'=>['index','show']]
-    );
-
-    Route::resource('materiaCurso','MateriaCursoController',[ 
-        'only'=>['index','show']]
-    );
-}); 
-
-Route::resource('unidads','UnidadController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::group([ 
-], function () { 
-    Route::resource('materiaUnidad','MateriaUnidadController',[ 
-        'only'=>['index','show']]
-    );
-    Route::resource('unidadMateria','UnidadMateriaController',[ 
-        'only'=>['index','show']]
-    );
-}); 
-
-Route::resource('recursos','RecursoController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::group([ 
-], function () { 
-    Route::resource('unidadRecurso','UnidadRecursoController',[ 
-        'only'=>['index','show']]
-    );
-    Route::resource('recursoUnidad','RecursoUnidadController',[ 
-        'only'=>['index','show']]
-    );
-}); 
-
-Route::resource('temas','TemaController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::group([ 
-], function () { 
-    Route::resource('unidadTema','UnidadTemaController',[ 
-        'only'=>['index','show']]
-    );
-    Route::resource('temaUnidad','TemaUnidadController',[ 
-        'only'=>['index','show']]
-    );
-}); 
-
-Route::resource('actividads','ActividadController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::group([ 
-], function () { 
-    Route::resource('unidadActividad','UnidadActividadController',[ 
-        'only'=>['index','show']]
-    );
-    Route::resource('actividadUnidad','ActividadUnidadController',[ 
-        'only'=>['index','show']]
-    );
-}); 
 
 Route::group([ 
 ], function () { 

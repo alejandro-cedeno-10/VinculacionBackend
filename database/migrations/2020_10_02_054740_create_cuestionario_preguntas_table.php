@@ -14,6 +14,7 @@ class CreateCuestionarioPreguntasTable extends Migration
     public function up()
     {
         Schema::create('cuestionario_preguntas', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->foreignId('idCuestionario');
             $table->foreign('idCuestionario')->references('idCuestionario')->on('cuestionarios')->onDelete('cascade')->onUpdate('cascade');
 

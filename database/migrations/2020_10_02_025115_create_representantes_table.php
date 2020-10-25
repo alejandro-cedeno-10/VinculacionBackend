@@ -14,6 +14,7 @@ class CreateRepresentantesTable extends Migration
     public function up()
     {
         Schema::create('representantes', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->char('idRepresentante',10);
             $table->string('ocupacion');
             $table->string('direccionTrabajo');

@@ -14,6 +14,7 @@ class CreateCuerpoDecesTable extends Migration
     public function up()
     {
         Schema::create('cuerpo_deces', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->char('idPersona',10);
             $table->string('cargo');
 

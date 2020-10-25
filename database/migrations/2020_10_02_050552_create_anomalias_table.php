@@ -14,6 +14,7 @@ class CreateAnomaliasTable extends Migration
     public function up()
     {
         Schema::create('anomalias', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idAnomalia');
             $table->string('afectado');
             $table->string('descripcion')->nullable();
@@ -27,7 +28,6 @@ class CreateAnomaliasTable extends Migration
             $table->foreignId('idMateriaProfesor');
             $table->foreign('idMateriaProfesor')->references('idMateriaProfesor')->on('materia_Profesors')->onDelete('cascade')->onUpdate('cascade');            
 
-            $table->primary('idAnomalia');
         });
     }
 

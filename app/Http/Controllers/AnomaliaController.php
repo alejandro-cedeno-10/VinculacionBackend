@@ -49,7 +49,7 @@ class AnomaliaController extends Controller
             'idSubcategoria'     => 'required|numeric|exists:subcategorias,idSubcategoria',   
             'afectado'     => 'required|string|max:30',
             'descripcion'     => 'required|string|max:150',
-            'valoracion'     => 'required|string|max:1'                   
+            'valoracion'         =>   'in:Regular,Urgente,Muy urgente',               
         ]);
 
         $anomalia=Cache::remember('anomalias',15/60, function() use ($request)

@@ -14,12 +14,11 @@ class CreateCursosTable extends Migration
     public function up()
     {
         Schema::create('cursos', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idCurso');
             $table->string('curso');
             
-            $table->timestamps();
-
-            $table->primary('idCurso');            
+            $table->timestamps();          
         });
     }
 

@@ -14,14 +14,14 @@ class CreatePeriodoLectivosTable extends Migration
     public function up()
     {
         Schema::create('periodo_lectivos', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idPeriodoLectivo');
             $table->date('fechaInicio');
             $table->date('fechaFinal');
             $table->string('periodoLectivo');
             
             $table->timestamps();
-
-            $table->primary('idPeriodoLectivo');            
+           
         });
     }
 

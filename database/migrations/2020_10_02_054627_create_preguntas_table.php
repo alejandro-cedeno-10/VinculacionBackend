@@ -14,12 +14,12 @@ class CreatePreguntasTable extends Migration
     public function up()
     {
         Schema::create('preguntas', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idPregunta');
             $table->string('pregunta');
             
             $table->timestamps();
 
-            $table->primary('idPregunta');
         });
     }
 

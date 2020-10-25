@@ -14,6 +14,7 @@ class CreateDiagnosticoTutorsTable extends Migration
     public function up()
     {
         Schema::create('diagnostico_tutors', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->char('idProfesor',10);
             $table->string('descripcion');
 

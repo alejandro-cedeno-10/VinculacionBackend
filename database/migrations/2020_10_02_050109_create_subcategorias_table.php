@@ -14,6 +14,7 @@ class CreateSubcategoriasTable extends Migration
     public function up()
     {
         Schema::create('subcategorias', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idSubcategoria');
             $table->string('nombreSubcategoria');
             $table->string('sugerencia')->nullable();
@@ -22,8 +23,7 @@ class CreateSubcategoriasTable extends Migration
 
             $table->foreignId('idCategoria');
             $table->foreign('idCategoria')->references('idCategoria')->on('categorias')->onDelete('cascade')->onUpdate('cascade');            
-
-            $table->primary('idSubcategoria');            
+           
         });
     }
 

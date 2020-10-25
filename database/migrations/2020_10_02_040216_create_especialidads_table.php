@@ -14,12 +14,11 @@ class CreateEspecialidadsTable extends Migration
     public function up()
     {
         Schema::create('especialidads', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idEspecialidad');
             $table->string('especialidad');
             
             $table->timestamps();
-
-            $table->primary('idEspecialidad');
         });
     }
 

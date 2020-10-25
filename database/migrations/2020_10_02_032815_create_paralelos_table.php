@@ -14,12 +14,11 @@ class CreateParalelosTable extends Migration
     public function up()
     {
         Schema::create('paralelos', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('idParalelo');
             $table->string('paralelo');
             
             $table->timestamps();
-
-            $table->primary('idParalelo');
         });
     }
 

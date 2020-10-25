@@ -28,13 +28,17 @@ class AuthController extends Controller
     {
         $request->validate([
             'cedula'     => 'required|string|min:10|max:10|unique:users,cedula',
-            'name'     => 'required|string|max:30',
-            'lastname'     => 'required|string|max:30',
-            'email'    => 'required|string|email|unique:users,email',
-            'descripcion'     => 'nullable|string',
-            'password' => 'required|string|confirmed',
+            'apellidoPaterno'     => 'required|string|max:30',
+            'apellidoMaterno'     => 'required|string|max:30',
+            'nombres'     => 'required|string|max:30',
+            'direccion'     => 'required|string',
+            'telefono'     => 'nullable|string|min:10|max:10',
+            'sexo'         =>   'in:M,F',
+            'fechaNacimiento'         =>  'required|date',
+            'estadoCivil'         =>   'in:S,C,V,D,U',
             'avatar'     => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5048',
         ]);
+        
 
         $user=Cache::remember('users',15/60, function() use ($request)
             {
@@ -44,9 +48,12 @@ class AuthController extends Controller
         
        
         //Encripto clave 
-        $user->password=bcrypt($request->password);
-        $user->activation_token=Str::random(60);
-        
+        $user->password=bcrypt($request->cedula);
+
+        $cedula = substr($request->cedula, -4); 
+
+        $user->email=$request->apellidoPaterno.$cedula.'@'.'nacional'.'edu'.'ec';
+
         if($request->hasFile('avatar')){
             $avatar = $request->file('avatar');    
             $filename= $user->cedula.'.'.$avatar->getClientOriginalExtension();
@@ -55,8 +62,6 @@ class AuthController extends Controller
         }
 
         $user->save();        
-
-        $user->notify(new SignupActivate($user));
 
         return response()->json(['data'=>$user,
             'message' => 'Usuario Creado'], 201)
@@ -80,17 +85,8 @@ class AuthController extends Controller
                 return User::where( 'email', $request->email )->first();
             });
 
-        if( $user->active == false)
-            
-            return response( )->json([
-                'success' => false,
-                'message' => 'Su correo electrónico aún no ha sido validado, por favor verifique la bandeja de entrada de su dirección de correo.',
-                'code'    => 401,
-            ], 401 );
 
         $credentials = request(['email', 'password']);
-        $credentials['active'] = 1;
-        $credentials['deleted_at'] = null;
        
        
         if (!Auth::attempt($credentials)) {
@@ -99,6 +95,9 @@ class AuthController extends Controller
             ], 401);
         }
         $user = $request->user();
+
+        // Le asignamos el rol
+        $user->assignRole('estudiante'); 
        
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -115,39 +114,6 @@ class AuthController extends Controller
         ]);
     }
 
-
-    public function signupActivate($token)
-    {
-        $user=Cache::remember('users',15/60, function() use ($token)
-        {
-            // Caché válida durante 15 segundos.
-            return  User::where('activation_token', $token)->first();
-        });
-
-        
-        if (!$user) {
-            return response()->json(['message' => 'El token de activación es inválido'], 404);
-        }
-        
-        $user->active = true;
-        $user->activation_token = '';
-        $user->email_verified_at =Carbon::now()->toDateTimeString();
-        
-        $user->save();
-
-        // Le asignamos el rol de Cliente
-        $user->assignRole('cliente'); 
-
-        /* $user->assignRole('SuperAdmin'); */
-       
-
-        // Retorna una respuesta 200 (Ok)
-        return response( )->json([
-            'success' => true,
-            'message' => 'Su dirección de correo ha sido validada con éxito.',
-            'code'    => 200,
-        ], 200 );
-    }
 
     public function logout(Request $request)
     {
