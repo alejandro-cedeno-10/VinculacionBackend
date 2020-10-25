@@ -57,7 +57,10 @@ class EstudianteController extends Controller
             });
 	
 		$estudiante->save();
-	
+    
+        // Le asignamos el rol
+        $estudiante->assignRole('Estudiante'); 
+
         return response()->json(['data'=>$estudiante,
             'message' => 'Estudiante Creado'], 201)
             ->header('Location', env('APP_URL').'estudiantes/'.$estudiante->idEstudiante)

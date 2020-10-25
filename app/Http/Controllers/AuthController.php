@@ -96,8 +96,6 @@ class AuthController extends Controller
         }
         $user = $request->user();
 
-        // Le asignamos el rol
-        $user->assignRole('estudiante'); 
        
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;

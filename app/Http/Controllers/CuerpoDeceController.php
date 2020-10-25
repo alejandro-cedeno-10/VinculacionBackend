@@ -55,7 +55,11 @@ class CuerpoDeceController extends Controller
                 return cuerpo_dece::create($request->all());
             });
 	
-		$cuerpo_dece->save();
+        $cuerpo_dece->save();
+        
+        // Le asignamos el rol
+        $cuerpo_dece->assignRole('Cuerpo_dece'); 
+
 	
         return response()->json(['data'=>$cuerpo_dece,
             'message' => 'Cuerpo DECE Creado'], 201)

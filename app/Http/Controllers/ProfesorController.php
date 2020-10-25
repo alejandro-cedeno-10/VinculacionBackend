@@ -57,7 +57,11 @@ class ProfesorController extends Controller
                 return profesor::create($request->all());
             });
 	
-		$profesor->save();
+        $profesor->save();
+                
+        // Le asignamos el rol
+        $profesor->assignRole('Profesor'); 
+
 	
         return response()->json(['data'=>$profesor,
             'message' => 'Profesor Creado'], 201)

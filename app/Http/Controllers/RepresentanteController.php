@@ -57,7 +57,10 @@ class RepresentanteController extends Controller
             });
 	
 		$representante->save();
-	
+    
+        // Le asignamos el rol
+        $representante->assignRole('Representante'); 
+
         return response()->json(['data'=>$curso,
             'message' => 'Representante Creado'], 201)
             ->header('Location', env('APP_URL').'representantes/'.$representante->idRepresentante)
