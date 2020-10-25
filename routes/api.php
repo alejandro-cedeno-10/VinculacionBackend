@@ -39,16 +39,20 @@ Route::group([
         );
         Route::post('users_avatar', 'UserController@update_avatar');
 }); 
+
+Route::resource('categorias','AnomaliaController',[ 
+    'except'=>['create','edit']]
+);
  
-Route::resource('cursos','CategoriaController',[ 
+Route::resource('categorias','CategoriaController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','CuerpoDeceController',[ 
+Route::resource('cuerpo_deces','CuerpoDeceController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','CuestionarioController',[ 
+Route::resource('cuestonatios','CuestionarioController',[ 
     'except'=>['create','edit']]
 );
 
@@ -56,83 +60,66 @@ Route::resource('cursos','CursoController',[
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','EspecialidadController',[ 
+Route::resource('especialidades','EspecialidadController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','EstadoController',[ 
+Route::resource('estados','EstadoController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','EspecialidadController',[ 
+Route::resource('estudiantes','EstudianteController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','EstadoController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::resource('cursos','EstudianteController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::resource('cursos','MateriaController',[ 
+Route::resource('materias','MateriaController',[ 
     'except'=>['create','edit']]
 );
 
 
-Route::resource('cursos','MatriculaController',[ 
+Route::resource('matriculas','MatriculaController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','MensajesController',[ 
-    'except'=>['create','edit']]
-);
-
-
-Route::resource('cursos','OpcionController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::resource('cursos','ParaleloController',[ 
+Route::resource('mensajes','MensajesController',[ 
     'except'=>['create','edit']]
 );
 
 
-Route::resource('cursos','PeriodoLectivoController',[ 
+Route::resource('opciones','OpcionController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','PreguntaController',[ 
+Route::resource('paralelos','ParaleloController',[ 
     'except'=>['create','edit']]
 );
 
 
-Route::resource('cursos','PeriodoLectivoController',[ 
+Route::resource('periodo_lectivos','PeriodoLectivoController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','PreguntaController',[ 
+Route::resource('preguntas','PreguntaController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','ProfesorController',[ 
+Route::resource('profesores','ProfesorController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','RepresentanteController',[ 
+Route::resource('representantes','RepresentanteController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','RespuestaController',[ 
+Route::resource('respuestas','RespuestaController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','SubcategoriaController',[ 
+Route::resource('subcategorias','SubcategoriaController',[ 
     'except'=>['create','edit']]
 );
 
-Route::resource('cursos','TipoAsignaturaController',[ 
+Route::resource('tipo_asignaturas','TipoAsignaturaController',[ 
     'except'=>['create','edit']]
 );
 
