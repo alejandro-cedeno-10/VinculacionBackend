@@ -57,7 +57,7 @@ class representante extends Model
     public function User()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->belongsTo('App\persona','idRepresentante','idPersona');
+        return $this->belongsTo('App\user','idRepresentante','idPersona');
     }
     
     public function Matriculas()

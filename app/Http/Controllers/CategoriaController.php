@@ -113,7 +113,7 @@ class CategoriaController extends Controller
         $categoria=Cache::remember('categorias',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return categpria::find($id);
+			return categoria::find($id);
 		});
 
 		if(!$categoria)

@@ -27,7 +27,7 @@ class AuthController extends Controller
     public function signup(Request $request)
     {
         $request->validate([
-            'cedula'     => 'required|string|min:10|max:10|unique:users,cedula',
+            'idPersona'     => 'required|string|min:10|max:10|unique:users,idPersona',
             'apellidoPaterno'     => 'required|string|max:30',
             'apellidoMaterno'     => 'required|string|max:30',
             'nombres'     => 'required|string|max:30',
@@ -48,15 +48,15 @@ class AuthController extends Controller
         
        
         //Encripto clave 
-        $user->password=bcrypt($request->cedula);
+        $user->password=bcrypt($request->idPersona);
 
-        $cedula = substr($request->cedula, -4); 
+        $idPersona = substr($request->idPersona, -4); 
 
-        $user->email=$request->apellidoPaterno.$cedula.'@'.'nacional'.'edu'.'ec';
+        $user->email=$request->apellidoPaterno.$idPersona.'@'.'nacional'.'.'.'edu'.'.'.'ec';
 
         if($request->hasFile('avatar')){
             $avatar = $request->file('avatar');    
-            $filename= $user->cedula.'.'.$avatar->getClientOriginalExtension();
+            $filename= $user->idPersona.'.'.$avatar->getClientOriginalExtension();
             Image::make($avatar)->resize(300, 300)->save( public_path('/uploads/avatars/' . $filename ) );  
             $user->avatar=$filename;
         }
@@ -65,7 +65,7 @@ class AuthController extends Controller
 
         return response()->json(['data'=>$user,
             'message' => 'Usuario Creado'], 201)
-            ->header('Location', env('APP_URL').'users/'.$user->cedula)
+            ->header('Location', env('APP_URL').'users/'.$user->idPersona)
             ->header('Content-Type', 'application/json');
     }
 

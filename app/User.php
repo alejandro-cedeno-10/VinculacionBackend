@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,Notifiable, SoftDeletes,HasRoles;
+    use HasApiTokens,Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +33,7 @@ class User extends Authenticatable
     // indicamos que es string
     protected $keyType = 'string';
 
-    protected $dates = ['deleted_at'];
+    
     
     
     // Atributos que se pueden asignar de manera masiva.

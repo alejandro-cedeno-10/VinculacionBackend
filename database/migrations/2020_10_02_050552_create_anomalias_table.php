@@ -26,7 +26,7 @@ class CreateAnomaliasTable extends Migration
             $table->foreign('idSubCategoria')->references('idSubCategoria')->on('subcategorias')->onDelete('cascade')->onUpdate('cascade');            
 
             $table->foreignId('idMateriaProfesor');
-            $table->foreign('idMateriaProfesor')->references('idMateriaProfesor')->on('materia_Profesors')->onDelete('cascade')->onUpdate('cascade');            
+            $table->foreign('idMateriaProfesor')->references('idMateriaProfesor')->on('materia_profesors')->onDelete('cascade')->onUpdate('cascade');            
 
         });
     }

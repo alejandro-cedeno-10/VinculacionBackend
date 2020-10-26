@@ -40,17 +40,64 @@ Route::group([
         Route::post('users_avatar', 'UserController@update_avatar');
 }); 
 
-Route::resource('categorias','AnomaliaController',[ 
+
+Route::resource('estudiantes','EstudianteController',[ 
     'except'=>['create','edit']]
 );
- 
-Route::resource('categorias','CategoriaController',[ 
+
+
+Route::resource('representantes','RepresentanteController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('profesors','ProfesorController',[ 
     'except'=>['create','edit']]
 );
 
 Route::resource('cuerpo_deces','CuerpoDeceController',[ 
     'except'=>['create','edit']]
 );
+
+Route::resource('anomalias','AnomaliaController',[ 
+    'except'=>['create','edit']]
+);
+
+Route::resource('mensajes','MensajesController',[ 
+    'except'=>['create','edit']]
+);
+
+
+/* Route::group([ 
+], function () { 
+
+    Route::resource('profesors.anomalias','DiagnosticoTutorController',[ 
+        'only'=>['store','destroy']]
+    );
+
+    Route::resource('estudiantes.anomalias','ReporteEstudianteController',[ 
+        'only'=>['store','destroy']]
+    );
+
+});  
+
+Route::resource('categorias','CategoriaController',[ 
+    'except'=>['create','edit']]
+); */
+
+/*  
+Route::group([ 
+], function () { 
+
+    Route::resource('categoriaSubcategoria','CategoriaSubcategoriasController',[ 
+        'only'=>['index','show']]
+    );
+
+    Route::resource('subcategoriaCategoria','SubcategoriaCategoriaController',[ 
+        'only'=>['index','show']]
+    );
+});   */
+
+
 
 Route::resource('cuestonatios','CuestionarioController',[ 
     'except'=>['create','edit']]
@@ -68,9 +115,7 @@ Route::resource('estados','EstadoController',[
     'except'=>['create','edit']]
 );
 
-Route::resource('estudiantes','EstudianteController',[ 
-    'except'=>['create','edit']]
-);
+
 
 Route::resource('materias','MateriaController',[ 
     'except'=>['create','edit']]
@@ -81,9 +126,6 @@ Route::resource('matriculas','MatriculaController',[
     'except'=>['create','edit']]
 );
 
-Route::resource('mensajes','MensajesController',[ 
-    'except'=>['create','edit']]
-);
 
 
 Route::resource('opciones','OpcionController',[ 
@@ -103,13 +145,6 @@ Route::resource('preguntas','PreguntaController',[
     'except'=>['create','edit']]
 );
 
-Route::resource('profesores','ProfesorController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::resource('representantes','RepresentanteController',[ 
-    'except'=>['create','edit']]
-);
 
 Route::resource('respuestas','RespuestaController',[ 
     'except'=>['create','edit']]
@@ -125,20 +160,7 @@ Route::resource('tipo_asignaturas','TipoAsignaturaController',[
 
 
 
-/* Route::group([ 
-], function () { 
-    Route::resource('users.cursos','UsersCursosController',[ 
-        'only'=>['store','destroy']]
-    );
-
-    Route::resource('userCurso','UserCursoController',[ 
-        'only'=>['index','show']]
-    );
-
-    Route::resource('cursoUser','CursoUserController',[ 
-        'only'=>['index','show']]
-    );
-});  
+/* 
 
 Route::group([ 
     ], function () { 

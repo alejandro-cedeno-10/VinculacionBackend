@@ -44,9 +44,11 @@ class EstudianteController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $request->validate([
-            'idEstudiante'     => 'required|string|max:11|exists:users,idPersona',  
-            'idRepresentante'     => 'required|string|max:11|exists:users,idPersona',           
+            'idEstudiante'     => 'required|string|max:10|unique:estudiantes,idEstudiante|exists:users,idPersona',  
+            'idRepresentante'     => 'required|string|max:10|unique:estudiantes,idRepresentante|exists:users,idPersona',           
             'procedencia'     => 'required|string|max:80' 
         ]);
 
@@ -58,8 +60,8 @@ class EstudianteController extends Controller
 	
 		$estudiante->save();
     
-        // Le asignamos el rol
-        $estudiante->assignRole('Estudiante'); 
+       /*  // Le asignamos el rol
+        $estudiante->assignRole('Estudiante');  */
 
         return response()->json(['data'=>$estudiante,
             'message' => 'Estudiante Creado'], 201)

@@ -27,7 +27,7 @@ class RepresentanteUserController extends Controller
     public function index()
     {
         $representante = QueryBuilder::for(representante::class)
-            ->allowedIncludes('users')
+            ->allowedIncludes('User')
             ->get();
 
         return response()->json([

@@ -14,8 +14,8 @@ class PermissionController extends Controller
 	// controlador la autenticación usando el Middleware auth.basic,
     public function __construct()
 	{	
-		$this->middleware('auth:api');  
-	    $this->middleware('role:SuperAdmin'); 
+	/* 	$this->middleware('auth:api');  
+	    $this->middleware('role:SuperAdmin');  */
 	
     }
 

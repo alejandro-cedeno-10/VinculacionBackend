@@ -135,7 +135,7 @@ class UserController extends Controller
 			return response()->json([
 				'status'=>true,
 				'data'=>$user],200)
-				->header('Location', env('APP_URL').'users/'.$user->cedula)
+				->header('Location', env('APP_URL').'users/'.$user->idPersona)
 				->header('Content-Type', 'application/json');
 
 
@@ -166,7 +166,7 @@ class UserController extends Controller
 			if ($request->nombres!= null)
 			{
 				$request->validate([
-					'nombres'    => 'required|string|email|unique:users,email',
+					'nombres'    => 'required|string',
 				]);
 		
 				$user->nombres = $request->nombres;
@@ -249,7 +249,7 @@ class UserController extends Controller
 				return response()->json([
 					'status'=>true,
 					'data'=>$user],200)
-					->header('Location', env('APP_URL').'users/'.$user->cedula)
+					->header('Location', env('APP_URL').'users/'.$user->idPersona)
 					->header('Content-Type', 'application/json');
 			}
 			else
@@ -274,18 +274,18 @@ class UserController extends Controller
 	public function update_avatar(Request $request)
 	{
 		$request->validate([
-            'cedula'     => 'required|string|min:10|max:10|exists:users,cedula',
+            'idPersona'     => 'required|string|min:10|max:10|exists:users,idPersona',
             'avatar'     => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
         ]);
 
 		$user=Cache::remember('users',15/60, function() use ($request)
 		{
 			// Caché válida durante 15 segundos.
-			return User::find($request->cedula);
+			return User::find($request->idPersona);
 		});
 
 		$avatar = $request->file('avatar');    
-		$filename= $user->cedula.'.'.$avatar->getClientOriginalExtension();
+		$filename= $user->idPersona.'.'.$avatar->getClientOriginalExtension();
 		Image::make($avatar)->resize(300, 300)->save( public_path('/uploads/avatars/'.$filename ) );  
 		$user->avatar=$filename;
 			
@@ -294,7 +294,7 @@ class UserController extends Controller
 		return response()->json([
 			'status'=>true,
 			'data'=>$user],200)
-			->header('Location', env('APP_URL').'users/'.$user->cedula)
+			->header('Location', env('APP_URL').'users/'.$user->idPersona)
 			->header('Content-Type', 'application/json');
 	}
 

@@ -45,7 +45,7 @@ class CuerpoDeceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'idPersona'     => 'required|string|max:10|exists:users,idPersona',            
+            'idPersona'     => 'required|string|max:10|exists:users,idPersona|unique:cuerpo_deces,idPersona',            
             'cargo'     => 'required|string|max:30'            
         ]);
 
@@ -56,9 +56,9 @@ class CuerpoDeceController extends Controller
             });
 	
         $cuerpo_dece->save();
-        
+     /*    
         // Le asignamos el rol
-        $cuerpo_dece->assignRole('Cuerpo_dece'); 
+        $cuerpo_dece->assignRole('Cuerpo_dece');  */
 
 	
         return response()->json(['data'=>$cuerpo_dece,

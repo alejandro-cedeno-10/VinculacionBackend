@@ -44,6 +44,7 @@ class MensajesController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'idPersona'     => 'required|string|max:10|exists:users,idPersona',
             'receptor'     => 'required|string|max:10|exists:users,idPersona',
@@ -191,7 +192,7 @@ class MensajesController extends Controller
 			return mensajes::find($id);  
 		});
 		
-		if(!$mensaje)
+		if(!$mensajes)
 		{
 			return response()->json(
 				['errors'=>array(['code'=>404,

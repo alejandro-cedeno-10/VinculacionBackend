@@ -45,7 +45,7 @@ class ProfesorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'idProfesor'     => 'required|string|max:10|exist:users,idPersona',
+            'idProfesor'     => 'required|string|max:10|exists:users,idPersona|unique:profesors,idProfesor',
             'cargo'     => 'required|string|max:50',
             'titulacion'     => 'required|string|max:50', 
             'fechaIngreso'     => 'required|date'           
@@ -59,9 +59,9 @@ class ProfesorController extends Controller
 	
         $profesor->save();
                 
-        // Le asignamos el rol
+      /*   // Le asignamos el rol
         $profesor->assignRole('Profesor'); 
-
+ */
 	
         return response()->json(['data'=>$profesor,
             'message' => 'Profesor Creado'], 201)

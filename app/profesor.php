@@ -56,7 +56,7 @@ class profesor extends Model
     public function User()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->belongsTo('App\persona','idProfesor','idPersona');
+        return $this->belongsTo('App\user','idProfesor','idPersona');
     }
     
     public function Materias()

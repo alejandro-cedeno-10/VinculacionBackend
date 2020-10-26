@@ -45,7 +45,7 @@ class RepresentanteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'idRepresentante'     => 'required|string|max:10',
+            'idRepresentante'     => 'required|string|max:10|exists:users,idPersona|unique:representantes,idRepresentante',
             'ocupacion'     => 'required|string|max:50',
             'direccionTrabajo'     => 'required|string|max:150'            
         ]);
@@ -58,10 +58,10 @@ class RepresentanteController extends Controller
 	
 		$representante->save();
     
-        // Le asignamos el rol
+     /*    // Le asignamos el rol
         $representante->assignRole('Representante'); 
-
-        return response()->json(['data'=>$curso,
+ */
+        return response()->json(['data'=>$representante,
             'message' => 'Representante Creado'], 201)
             ->header('Location', env('APP_URL').'representantes/'.$representante->idRepresentante)
             ->header('Content-Type', 'application/json');
