@@ -18,13 +18,6 @@ class matricula extends Model
     // Eloquent asume que cada tabla tiene una clave primaria con una columna llamada id.
 	// Si éste no fuera el caso entonces hay que indicar cuál es nuestra clave primaria en la tabla:
 	protected $primaryKey = 'idMatricula';
-
-    // Para indicar que no hay autoincremento en la clave primaria
-    public $incrementing = false;
-
-    // Como no se hara operaciones con el numero de cedula
-    // indicamos que es string
-    protected $keyType = 'string';
     
     
     // Atributos que se pueden asignar de manera masiva.

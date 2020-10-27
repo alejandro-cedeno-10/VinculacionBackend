@@ -45,7 +45,6 @@ class MatriculaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'idMatricula'     => 'required|string|max:10',
             'idRepresentante'     => 'required|string|max:10|exists:representantes,idRepresentante',
             'idCurso'     => 'required|numeric|exists:cursos,idCurso',
             'idParalelo'     => 'required|numeric|exists:paralelos,idParalelo',
@@ -135,11 +134,9 @@ class MatriculaController extends Controller
 		if($request->method() === 'PUT')
 		{
             $request->validate([
-                'idMatricula'     => 'required|string|max:10',
                 'folder'     => 'required|string|max:80' 
             ]);
 			
-            $matricula->idMatricula = $request->idMatricula;
             $matricula->folder = $request->folder;
             		
 			$matricula->save();
@@ -152,16 +149,6 @@ class MatriculaController extends Controller
 		}else{
 			// Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
 			$bandera = false;
-
-			if ($request->idMatricula!= null)
-			{
-				$request->validate([
-                    'idMatricula'     => 'required|string|max:10'
-                ]);
-
-				$matricula->idMatricula = $request->idMatricula;
-				$bandera=true;
-            }
             
             if ($request->folder!= null)
 			{
@@ -217,9 +204,9 @@ class MatriculaController extends Controller
 			])],404);
 		}
 
-        $Matricula_Estado=$matricula->Matricula_Estado->first();
+        $Estados=$matricula->Estados->first();
         
-        $Matricula_Estudiante=$matricula->Matricula_Estudiante->first();
+        $Estudiantes_Pivote=$matricula->Estudiantes_Pivote->first();
         
         $Estudiante=$matricula->Estudiante->first();
                 
@@ -233,7 +220,7 @@ class MatriculaController extends Controller
 
         $Periodo_Lectivo=$matricula->Periodo_Lectivo->first();
              
-		if ($Matricula_Estado || $Matricula_Estudiante || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $Periodo_Lectivo)
+		if ($Estados || $Estudiantes_Pivote || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $Periodo_Lectivo)
 		{
 			$matricula->delete();
 			

@@ -54,7 +54,7 @@ class estudiante extends Model
     //  etc..
     
     
-    public function User_Estudiante()
+    public function user()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\user','idEstudiante','idPersona');

@@ -202,7 +202,7 @@ class ParaleloController extends Controller
 
 		$Materias=$paralelo->Materias->first();
 
-        $Cursos=$paralelo->Paralelos->first();
+        $Cursos=$paralelo->Cursos->first();
 
         $Especialidades=$paralelo->Especialidades->first();
 

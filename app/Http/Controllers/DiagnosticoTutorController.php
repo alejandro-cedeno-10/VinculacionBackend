@@ -36,7 +36,8 @@ class DiagnosticoTutorController extends Controller
         
 		$request->validate([
             'idAnomalia'     => 'required|numeric|exists:anomalias,idAnomalia',
-            'idProfesor'     => 'required|string|max:10|exists:profesors,idProfesor'           
+            'idProfesor'     => 'required|string|max:10|exists:profesors,idProfesor',
+            'descripcion'     => 'required|string',
         ]);
 
         $diagnostico_tutor=Cache::remember('diagnostico_tutors',15/60, function() use ($request)

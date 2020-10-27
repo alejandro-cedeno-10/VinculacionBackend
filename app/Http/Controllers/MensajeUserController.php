@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\cuerpo_dece;
+use App\mensajes;
 
 use Spatie\QueryBuilder\QueryBuilder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class DeceUserController extends Controller
+class MensajeUserController extends Controller
 {
     // Configuramos en el constructor del 
 	// Controlador la autenticación usando el Middleware auth.basic,
@@ -26,13 +26,13 @@ class DeceUserController extends Controller
      */
     public function index()
     {
-        $cuerpo_dece = QueryBuilder::for(cuerpo_dece::class)
+        $mensaje = QueryBuilder::for(mensajes::class)
             ->allowedIncludes('Persona')
             ->get();
 
         return response()->json([
 			'status'=>true,
-            'data'=>$cuerpo_dece
+            'data'=>$mensaje
         ], 200);
     }
 
@@ -66,26 +66,26 @@ class DeceUserController extends Controller
     public function show($id)
     {
         //
-        $cuerpo_dece=Cache::remember('cuerpo_deces',15/60, function() use ($id)
+        $mensaje=Cache::remember('mensajes',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return cuerpo_dece::find($id);  
+			return mensajes::find($id);  
 		});
 
-        if(!$cuerpo_dece)
+        if(!$mensaje)
         {
             return response()->json(
                 ['errors'=>array(['code'=>404,
-                'message'=>'No se encuentra un cuerpo_dece con ese identificador.',
+                'message'=>'No se encuentra un mensaje con ese identificador.',
                 'identificador'=>$id
             ])],404);
         }
 
-        $persona=$cuerpo_dece->Persona;
+        $Persona=$mensaje->Persona;
 
         return response()->json([
             'status'=>true,
-            'data'=>$cuerpo_dece
+            'data'=>$mensaje
         ], 200);
     }
 

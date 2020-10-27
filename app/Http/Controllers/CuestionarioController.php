@@ -46,7 +46,7 @@ class CuestionarioController extends Controller
     {
         $request->validate([
             'idPeriodoLectivo'     => 'required|numeric|exists:periodo_lectivos,idPeriodoLectivo',
-            'idCurso'     => 'required|numeric|exists:cursos,idCursos',      
+            'idCurso'     => 'required|numeric|exists:cursos,idCurso',      
             'idPersona'     => 'required|string|max:10|exists:cuerpo_deces,idPersona',
             'idEspecialidad'     => 'required|numeric|exists:especialidads,idEspecialidad',            
             'idParalelo'     => 'required|numeric|exists:paralelos,idParalelo'  

@@ -21,7 +21,7 @@ class anomalia extends Model
     
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [
-        'idMateriaProfesor','idSubCategoria','afectado','descripcion','valoracion'
+        'idMateriaProfesor','idSubcategoria','afectado','descripcion','valoracion'
     ];
 
     /**

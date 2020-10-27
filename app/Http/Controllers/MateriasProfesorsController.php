@@ -70,18 +70,14 @@ class MateriasProfesorsController extends Controller
      * @param  \App\materia_profesor  $materia_profesor
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, $id2, $id3, $id4, $id5, $id6)
+    public function destroy($id)
     {
-        $materia_profesor=Cache::remember('materia_profesors',15/60, function() use ($id,$id2,$id3,$id4,$id5,$id6)
+        $materia_profesor=Cache::remember('materia_profesors',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
 			return materia_profesor::where([
-                'idProfesor' => $id, 
-                'idCurso' => $id2,  
-                'idParalelo' => $id3,  
-                'idEspeciaalidad' => $id4,  
-                'idPeriodoLectivo' => $id5,  
-                'idMateria' => $id6])->first();
+                'idMateriaProfesor' => $id
+            ])->first();
         });
         
 		if(!$materia_profesor)
@@ -89,25 +85,16 @@ class MateriasProfesorsController extends Controller
 			return response()->json(
 				['errors'=>array(['code'=>404,
 				'message'=>'No se encuentra un materia_profesor con ese identificador.',
-                'identificador_1'=>$id,
-                'identificador_2'=>$id2,
-                'identificador_3'=>$id3,
-                'identificador_3'=>$id4,
-                'identificador_3'=>$id5,
-                'identificador_3'=>$id6
+                'idMateriaProfesor' => $id
 			])],404);
 		}
 
-        $materia_profesor=Cache::remember('materia_profesors',15/60, function() use ($id,$id2,$id3,$id4,$id5,$id6)
+        $materia_profesor=Cache::remember('materia_profesors',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
 			materia_profesor::where([
-                'idProfesor' => $id, 
-                'idCurso' => $id2,  
-                'idParalelo' => $id3,  
-                'idEspeciaalidad' => $id4,  
-                'idPeriodoLectivo' => $id5,  
-                'idMateria' => $id6])->delete();
+                'idMateriaProfesor' => $id
+                ])->delete();
         });
 		
 		return response()->json([

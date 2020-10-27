@@ -21,7 +21,7 @@ class materia_profesor extends Model
     
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [
-        'idProfesor','idCurso','idParalelo','idEspecialidad','idPeriodoLectivo','idMaterias','numeroHoras'
+        'idProfesor','idCurso','idParalelo','idEspecialidad','idPeriodoLectivo','idMateria','numeroHoras'
     ];
 
     /**

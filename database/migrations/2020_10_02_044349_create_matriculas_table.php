@@ -15,7 +15,7 @@ class CreateMatriculasTable extends Migration
     {
         Schema::create('matriculas', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->char('idMatricula',10);
+            $table->id('idMatricula');
             $table->char('idRepresentante',10);
             $table->char('idEstudiante',10);
             $table->string('folder');
@@ -36,8 +36,7 @@ class CreateMatriculasTable extends Migration
 
             $table->foreignId('idPeriodoLectivo');
             $table->foreign('idPeriodoLectivo')->references('idPeriodoLectivo')->on('periodo_lectivos')->onDelete('cascade')->onUpdate('cascade');
-            
-            $table->primary('idMatricula');
+    
         });
     }
 

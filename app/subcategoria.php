@@ -21,7 +21,7 @@ class subcategoria extends Model
     
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [
-        'idCategoria','nombreSubCategoria','sugerencia'
+        'idCategoria','nombreSubcategoria','sugerencia'
     ];
 
     /**

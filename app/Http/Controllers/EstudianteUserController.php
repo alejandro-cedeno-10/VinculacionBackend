@@ -27,7 +27,7 @@ class EstudianteUserController extends Controller
     public function index()
     {
         $estudiante = QueryBuilder::for(estudiante::class)
-            ->allowedIncludes('users')
+            ->allowedIncludes('user')
             ->get();
 
         return response()->json([
@@ -81,7 +81,7 @@ class EstudianteUserController extends Controller
             ])],404);
         }
 
-        $user_estudiante=$estudiante->User_Estudiante;
+        $user_estudiante=$estudiante->user;
 
         return response()->json([
             'status'=>true,

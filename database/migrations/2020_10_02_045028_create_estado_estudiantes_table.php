@@ -17,12 +17,13 @@ class CreateEstadoEstudiantesTable extends Migration
             $table->engine = 'InnoDB';
             $table->char('idEstudiante',10);
             $table->date('fecha');
-            $table->char('idMatricula',10);
             $table->string('descripcion');
                         
             $table->timestamps();
 
             $table->foreign('idEstudiante')->references('idEstudiante')->on('estudiantes')->onDelete('cascade')->onUpdate('cascade');
+            
+            $table->foreignId('idMatricula');
             $table->foreign('idMatricula')->references('idMatricula')->on('matriculas')->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreignId('idEstado');

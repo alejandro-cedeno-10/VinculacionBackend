@@ -89,7 +89,7 @@ class User extends Authenticatable
         return $this->hasOne('App\profesor','idProfesor','idPersona');
     }
     
-    public function Cuerpo_dece()
+    public function Dece()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasOne('App\cuerpo_dece','idPersona','idPersona');

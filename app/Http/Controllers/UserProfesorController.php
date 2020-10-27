@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\cuerpo_dece;
+use App\user;
 
 use Spatie\QueryBuilder\QueryBuilder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class DeceUserController extends Controller
+class UserProfesorController extends Controller
 {
     // Configuramos en el constructor del 
 	// Controlador la autenticación usando el Middleware auth.basic,
@@ -26,13 +26,13 @@ class DeceUserController extends Controller
      */
     public function index()
     {
-        $cuerpo_dece = QueryBuilder::for(cuerpo_dece::class)
-            ->allowedIncludes('Persona')
+        $user = QueryBuilder::for(user::class)
+            ->allowedIncludes('Profesor')
             ->get();
 
         return response()->json([
 			'status'=>true,
-            'data'=>$cuerpo_dece
+            'data'=>$user
         ], 200);
     }
 
@@ -66,26 +66,26 @@ class DeceUserController extends Controller
     public function show($id)
     {
         //
-        $cuerpo_dece=Cache::remember('cuerpo_deces',15/60, function() use ($id)
+        $user=Cache::remember('user',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return cuerpo_dece::find($id);  
+			return user::find($id);  
 		});
 
-        if(!$cuerpo_dece)
+        if(!$user)
         {
             return response()->json(
                 ['errors'=>array(['code'=>404,
-                'message'=>'No se encuentra un cuerpo_dece con ese identificador.',
+                'message'=>'No se encuentra un user con ese identificador.',
                 'identificador'=>$id
             ])],404);
         }
 
-        $persona=$cuerpo_dece->Persona;
+        $Estudiante=$user->Profesor;
 
         return response()->json([
             'status'=>true,
-            'data'=>$cuerpo_dece
+            'data'=>$user
         ], 200);
     }
 

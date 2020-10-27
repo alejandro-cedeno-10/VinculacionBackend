@@ -27,7 +27,7 @@ class ProfesorUserController extends Controller
     public function index()
     {
         $profesor = QueryBuilder::for(profesor::class)
-            ->allowedIncludes('users')
+            ->allowedIncludes('User')
             ->get();
 
         return response()->json([

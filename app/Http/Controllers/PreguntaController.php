@@ -45,7 +45,7 @@ class PreguntaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pregunta'     => 'required|string|max:30'            
+            'pregunta'     => 'required|string|max:300'            
         ]);
 
         $pregunta=Cache::remember('preguntas',15/60, function() use ($request)
@@ -128,7 +128,7 @@ class PreguntaController extends Controller
 		if($request->method() === 'PUT')
 		{
             $request->validate([
-                'pregunta'     => 'required|string|max:30'
+                'pregunta'     => 'required|string|max:300'
             ]);
 
             $pregunta->pregunta = $request->pregunta ;
@@ -147,7 +147,7 @@ class PreguntaController extends Controller
 			if ($request->pregunta!= null)
 			{
 				$request->validate([
-                    'pregunta'     => 'required|string|max:30'
+                    'pregunta'     => 'required|string|max:300'
                 ]);
 
 				$pregunta->pregunta = $request->pregunta ;
@@ -204,7 +204,7 @@ class PreguntaController extends Controller
 
 		$Respuestas=$pregunta->Respuestas->first();
 
-        if ($Cuestionario || $Opcion || $Respuesta)
+        if ($Cuestionarios || $Opciones || $Respuestas)
 		{
 			$pregunta->delete();
 			return response()->json([

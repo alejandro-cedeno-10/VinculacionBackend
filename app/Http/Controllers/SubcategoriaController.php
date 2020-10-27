@@ -20,7 +20,7 @@ class SubcategoriaController extends Controller
                 // Caché válida durante 30 segundos.
                 return subcategoria::all();
             });
-           
+
         return response()->json([
 			'status'=>true,
 			'data'=>$subcategoria], 200);
@@ -45,9 +45,9 @@ class SubcategoriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'idCategoria'     => 'required|numeric|exists:categorias,idCategoria',
             'nombreSubcategoria'     => 'required|string|max:30',
             'sugerencia'     => 'required|string|max:80',
-            'idCategoria'     => 'required|numeric|exists:categorias,idCategoria'                         
         ]);
 
         $subcategoria=Cache::remember('subcategorias',15/60, function() use ($request)
@@ -55,9 +55,9 @@ class SubcategoriaController extends Controller
                 // Caché válida durante 15 segundos.
                 return subcategoria::create($request->all());
             });
-	
+
 		$subcategoria->save();
-	
+
         return response()->json(['data'=>$subcategoria,
             'message' => 'Subcategoria Creada'], 201)
             ->header('Location', env('APP_URL').'subcategorias/'.$subcategoria->idSubcategoria)
@@ -126,17 +126,17 @@ class SubcategoriaController extends Controller
 				'identificador'=>$id
 			])],404);
 		}
-		
+
 		if($request->method() === 'PUT')
 		{
             $request->validate([
                 'nombreSubcategoria'     => 'required|string|max:30',
                 'sugerencia'     => 'required|string|max:80'
             ]);
-			
+
             $subcategoria->nombreSubcategoria= $request->nombreSubcategoria;
             $subcategoria->sugerencia= $request->sugerencia;
-		
+
 			$subcategoria->save();
 
 			return response()->json([
@@ -157,7 +157,7 @@ class SubcategoriaController extends Controller
 				$subcategoria->nombreSubcategoria= $request->nombreSubcategoria;
 				$bandera=true;
             }
-            
+
             if ($request->sugerencia!= null)
 			{
 				$request->validate([
@@ -167,7 +167,7 @@ class SubcategoriaController extends Controller
 				$subcategoria->sugerencia= $request->sugerencia;
 				$bandera=true;
 			}
-			
+
 			if ($bandera)
 			{
 				// Almacenamos en la base de datos el registro.
@@ -185,7 +185,7 @@ class SubcategoriaController extends Controller
 					status'=>false,
 					'message'=>'No se ha modificado ningún dato.'])
 				],200);
-			}		
+			}
 		}
     }
 
@@ -200,9 +200,9 @@ class SubcategoriaController extends Controller
         $subcategoria=Cache::remember('subcategorias',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return subcategoria::find($id);  
+			return subcategoria::find($id);
 		});
-		
+
 		if(!$subcategoria)
 		{
 			return response()->json(
@@ -213,19 +213,19 @@ class SubcategoriaController extends Controller
 		}
 
         $Anomalias=$subcategoria->Anomalias->first();
-        
+
         $Categoria=$subcategoria->Categoria->first();
-	
+
 		if ($Anomalias || $Categoria)
 		{
 			$subcategoria->delete();
-			
+
 			return response()->json([
 				'status'=>true,
 				'message'=>'La subcategoria contaba con relaciones. Se ha eliminado la subcategoria correctamente.'
 			],200);
-			
-		}   
+
+		}
 
 		$subcategoria->delete();
 
