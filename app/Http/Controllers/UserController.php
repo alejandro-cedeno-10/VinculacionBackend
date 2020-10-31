@@ -10,14 +10,7 @@ use Illuminate\Support\Facades\Cache;
 class UserController extends Controller
 {
 	
-	// Configuramos en el constructor del 
-	// controlador la autenticación usando el Middleware auth.basic,
-    public function __construct()
-	{	
-		/* $this->middleware('auth:api');  
-	    $this->middleware('role:SuperAdmin',['only'=>['index']]); 
-		$this->middleware('role:cliente|SuperAdmin',['only'=>['show']]);   */
-    }
+	
  
 	/**
 	 * Display a listing of the resource.

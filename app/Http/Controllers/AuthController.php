@@ -18,11 +18,7 @@ use Carbon\Carbon;
 
 class AuthController extends Controller
 {
-    //
-    public function __construct()
-	{
-      /*$this->middleware('auth',['only'=>['user','logout']]); */ 
-    }
+    
     
     public function signup(Request $request)
     {

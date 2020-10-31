@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class RepresentanteUserController extends Controller
 {
-    // Configuramos en el constructor del 
-	// Controlador la autenticación usando el Middleware auth.basic,
-    public function __construct()
-	{
-		/* $this->middleware('auth',['only'=>['index']]); */ 
-    }
+   
 
 
     /**

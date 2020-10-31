@@ -9,20 +9,7 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    // Configuramos en el constructor del 
-	// controlador la autenticación usando el Middleware auth.basic,
-    public function __construct()
-	{	
-		/* $this->middleware('auth:api');  
-	    $this->middleware('role:SuperAdmin'); 
-	 */
-    }
+   
 
     public function index()
     {
