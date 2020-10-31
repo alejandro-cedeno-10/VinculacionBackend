@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\user;
+use App\User;
 
 use Spatie\QueryBuilder\QueryBuilder;
 

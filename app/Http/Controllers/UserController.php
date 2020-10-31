@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Image;
 
 use Illuminate\Http\Request;
-use App\user;
+use App\User;
 use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
