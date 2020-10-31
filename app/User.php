@@ -20,7 +20,7 @@ class User extends Authenticatable
     // Nombre de la tabla en MySQL.
     protected $table='users';
 
-    
+    protected $guard_name = 'api';
     
     // Eloquent asume que cada tabla tiene una clave primaria con una columna llamada id.
 	// Si éste no fuera el caso entonces hay que indicar cuál es nuestra clave primaria en la tabla:
