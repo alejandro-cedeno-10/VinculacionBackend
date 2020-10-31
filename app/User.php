@@ -104,7 +104,7 @@ class User extends Authenticatable
     public function Mensaje()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->hasOne('App\mensajes','idPersona','idPersona');
+        return $this->hasMany('App\mensajes','idPersona','idPersona');
     }
     
     public function Mensaje_Receptor()

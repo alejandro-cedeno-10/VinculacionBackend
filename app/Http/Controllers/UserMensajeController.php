@@ -89,6 +89,34 @@ class UserMensajeController extends Controller
         ], 200);
     }
 
+    public function showReceptores($id)
+    {
+        //
+        $user=Cache::remember('user',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return user::find($id);  
+		});
+
+        if(!$user)
+        {
+            return response()->json(
+                ['errors'=>array(['code'=>404,
+                'message'=>'No se encuentra un user con ese identificador.',
+                'identificador'=>$id
+            ])],404);
+        }
+
+        $user=QueryBuilder::for(User::where('idPersona', $id)) 
+            ->allowedIncludes(['Mensaje'])
+            ->get(); 
+
+        return response()->json([
+            'status'=>true,
+            'data'=>$user
+        ], 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

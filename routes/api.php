@@ -191,6 +191,8 @@ Route::resource('mensajeUser','MensajeUserController',[
     'only'=>['index','show']]
 );
 
+Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');
+
 
 Route::group([ 
 ], function () { 
