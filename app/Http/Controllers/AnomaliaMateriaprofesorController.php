@@ -22,7 +22,7 @@ class AnomaliaMateriaprofesorController extends Controller
     public function index()
     {
         $anomalia = QueryBuilder::for(anomalia::class)
-            ->allowedIncludes('materia_profesors')
+            ->allowedIncludes('MateriaProfesor')
             ->get();
 
         return response()->json([
@@ -76,7 +76,7 @@ class AnomaliaMateriaprofesorController extends Controller
             ])],404);
         }
 
-        $materia_profesor=$anomalia->Materia_Profesor;
+        $MateriaProfesor=$anomalia->MateriaProfesor;
 
         return response()->json([
             'status'=>true,

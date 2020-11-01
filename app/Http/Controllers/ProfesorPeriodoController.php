@@ -21,7 +21,7 @@ class ProfesorPeriodoController extends Controller
     public function index()
     {
         $profesor = QueryBuilder::for(profesor::class)
-            ->allowedIncludes('periodo_lectivos')
+            ->allowedIncludes('PeriodoLectivos')
             ->get();
 
         return response()->json([
@@ -75,7 +75,7 @@ class ProfesorPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivos=$profesor->Periodo_Lectivos;
+        $periodo_lectivos=$profesor->PeriodoLectivos;
 
         return response()->json([
             'status'=>true,

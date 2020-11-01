@@ -22,7 +22,7 @@ class EstudianteAnomaliaController extends Controller
     public function index()
     {
         $estudiante = QueryBuilder::for(estudiante::class)
-            ->allowedIncludes('anomalias')
+            ->allowedIncludes('Anomalias')
             ->get();
 
         return response()->json([

@@ -21,7 +21,7 @@ class ProfesorAnomaliaController extends Controller
     public function index()
     {
         $profesor = QueryBuilder::for(profesor::class)
-            ->allowedIncludes('anomalias')
+            ->allowedIncludes('Anomalias')
             ->get();
 
         return response()->json([

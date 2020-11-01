@@ -22,7 +22,7 @@ class AnomaliaProfesorController extends Controller
     public function index()
     {
         $anomalia = QueryBuilder::for(anomalia::class)
-            ->allowedIncludes('profesors')
+            ->allowedIncludes('Profesores')
             ->get();
 
         return response()->json([

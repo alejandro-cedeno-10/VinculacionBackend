@@ -48,7 +48,7 @@ class EstudianteController extends Controller
 
         $request->validate([
             'idEstudiante'     => 'required|string|max:10|unique:estudiantes,idEstudiante|exists:users,idPersona',  
-            'idRepresentante'     => 'required|string|max:10|unique:estudiantes,idRepresentante|exists:users,idPersona',           
+            'idRepresentante'     => 'required|string|max:10|exists:users,idPersona',           
             'procedencia'     => 'required|string|max:80' 
         ]);
 

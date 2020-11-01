@@ -48,6 +48,6 @@ class categoria extends Model
     public function SubCategorias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->hasMany('App\categoria','idCategoria','idCategoria');
+        return $this->hasMany('App\subcategoria','idCategoria','idCategoria');
     }
 }

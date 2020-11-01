@@ -20,7 +20,7 @@ class CursoProfesorController extends Controller
     public function index()
     {
         $curso = QueryBuilder::for(curso::class)
-            ->allowedIncludes('profesors')
+            ->allowedIncludes('Profesores')
             ->get();
 
         return response()->json([

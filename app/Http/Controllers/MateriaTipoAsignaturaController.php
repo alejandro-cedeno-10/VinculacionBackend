@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\periodo_lectivo;
+use App\materia;
+use Illuminate\Http\Request;
 
 use Spatie\QueryBuilder\QueryBuilder;
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class PeriodoProfesorController extends Controller
+class MateriaTipoAsignaturaController extends Controller
 {
-   
-
-
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $periodo_lectivo = QueryBuilder::for(periodo_lectivo::class)
-            ->allowedIncludes('Profesores')
+        $materia = QueryBuilder::for(materia::class)
+            ->allowedIncludes('TipoAsignatura')
             ->get();
 
         return response()->json([
 			'status'=>true,
-            'data'=>$periodo_lectivo
+            'data'=>$materia
         ], 200);
     }
 
@@ -61,26 +57,26 @@ class PeriodoProfesorController extends Controller
     public function show($id)
     {
         //
-        $periodo_lectivo=Cache::remember('periodo_lectivos',15/60, function() use ($id)
+        $materia=Cache::remember('materias',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return periodo_lectivo::find($id);  
+			return materia::find($id);  
 		});
 
-        if(!$periodo_lectivo)
+        if(!$materia)
         {
             return response()->json(
                 ['errors'=>array(['code'=>404,
-                'message'=>'No se encuentra un periodo_lectivo con ese identificador.',
+                'message'=>'No se encuentra una materia con ese identificador.',
                 'identificador'=>$id
             ])],404);
         }
 
-        $profesores=$periodo_lectivo->Profesores;
+        $TipoAsignatura=$materia->TipoAsignatura;
 
         return response()->json([
             'status'=>true,
-            'data'=>$periodo_lectivo
+            'data'=>$materia
         ], 200);
     }
 

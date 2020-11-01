@@ -45,13 +45,13 @@ class subcategoria extends Model
 	// 1 usuario puede tener muchos roles  ->belongsToMany()
     //  etc..
     
-    public function Anomalias()
+    public function anomalias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\anomalia','idSubcategoria','idSubcategoria');
     }
 
-    public function Categoria()
+    public function categorias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\categoria','idCategoria','idCategoria');

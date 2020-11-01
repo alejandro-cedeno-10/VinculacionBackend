@@ -76,7 +76,7 @@ class AnomaliaSubcategoriaController extends Controller
             ])],404);
         }
 
-        $subcategoria=$anomalia->SubCategoria;
+        $subcategoria=$anomalia->subcategorias;
 
         return response()->json([
             'status'=>true,

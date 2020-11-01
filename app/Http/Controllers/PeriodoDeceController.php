@@ -22,7 +22,7 @@ class PeriodoDeceController extends Controller
     public function index()
     {
         $periodo_lectivo = QueryBuilder::for(periodo_lectivo::class)
-            ->allowedIncludes('cuerpo_deces')
+            ->allowedIncludes('CuerposDece')
             ->get();
 
         return response()->json([
@@ -76,7 +76,7 @@ class PeriodoDeceController extends Controller
             ])],404);
         }
 
-        $cuerpos_dece=$periodo_lectivo->Cuerpos_dece;
+        $cuerpos_dece=$periodo_lectivo->CuerposDece;
 
         return response()->json([
             'status'=>true,

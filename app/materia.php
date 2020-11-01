@@ -84,7 +84,7 @@ class materia extends Model
                 ->withPivot('idMateriaProfesor','idCurso','idParalelo','idEspecialidad',
                 'idProfesor','numeroHoras');
     }
-    public function Tipo_Asignatura()
+    public function TipoAsignatura()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\tipo_asignatura','idTipoAsignatura','idTipoAsignatura');

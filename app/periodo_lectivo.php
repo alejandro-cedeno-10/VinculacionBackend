@@ -96,7 +96,7 @@ class periodo_lectivo extends Model
         return $this->hasMany('App\cuestionario','idPeriodoLectivo','idPeriodoLectivo');
     }
 
-    public function Cuerpos_dece()
+    public function CuerposDece()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\cuerpo_dece','dece_lectivos','idPeriodoLectivo','idPersona');

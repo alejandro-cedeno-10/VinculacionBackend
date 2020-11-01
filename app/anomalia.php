@@ -46,7 +46,7 @@ class anomalia extends Model
     //  etc..
     
     
-    public function Materia_Profesor()
+    public function MateriaProfesor()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\materia_profesor','idMateriaProfesor','idMateriaProfesor');
@@ -59,10 +59,10 @@ class anomalia extends Model
                 ->withPivot('descripcion');
     }
 
-    public function SubCategoria()
+    public function subcategorias()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->belongsTo('App\subcategoria','idSubCategoria','idSubCategoria');
+        return $this->belongsTo('App\subcategoria','idSubcategoria','idSubcategoria');
     }
 
     public function Estudiantes()

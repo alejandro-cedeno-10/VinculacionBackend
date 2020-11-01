@@ -21,7 +21,7 @@ class ParaleloProfesorController extends Controller
     public function index()
     {
         $paralelo = QueryBuilder::for(paralelo::class)
-            ->allowedIncludes('profesors')
+            ->allowedIncludes('Profesores')
             ->get();
 
         return response()->json([

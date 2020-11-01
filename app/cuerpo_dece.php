@@ -60,10 +60,10 @@ class cuerpo_dece extends Model
         return $this->belongsTo('App\user','idPersona','idPersona');
     }
 
-    public function Periodo_Lectivos()
+    public function PeriodoLectivos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->belongsToMany('App\periodo_lectivo','dece_lectivos','idPersona','idPersona');
+        return $this->belongsToMany('App\periodo_lectivo','dece_lectivos','idPersona','idPeriodoLectivo');
     }
 
     public function Cuestionarios()

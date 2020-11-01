@@ -76,7 +76,7 @@ class SubcategoriaCategoriaController extends Controller
             ])],404);
         }
 
-        $categoria=$subcategoria->Categoria;
+        $categoria=$subcategoria->categorias;
 
         return response()->json([
             'status'=>true,

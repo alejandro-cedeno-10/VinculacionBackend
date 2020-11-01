@@ -187,8 +187,99 @@ Route::resource('mensajeUser','MensajeUserController',[
     'only'=>['index','show']]
 );
 
-Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');
+Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');////////////////////////////////////
 
+Route::resource('categoriaSubcategoria','CategoriaSubcategoriasController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('subcategoriaCategoria','SubcategoriaCategoriaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('subcategoriaAnomalia','SubcategoriaAnomaliaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('anomaliaSubcategoria','AnomaliaSubcategoriaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('asignaturaMateria','TipoAsignaturaMateriaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('materiaAsignatura','MateriaTipoAsignaturaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('profesorAnomalia','ProfesorAnomaliaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('anomaliaProfesor','AnomaliaProfesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('decePeriodo','DecePeriodoController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('periodoDece','PeriodoDeceController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('profesorCurso','ProfesorCursoController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('cursoProfesor','CursoProfesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('cursoProfesor','CursoProfesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('profesorParalelo','ProfesorParaleloController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('paraleloProfesor','ParaleloProfesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('profesorEspecialidad','ProfesorEspecialidadController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('especialidadProfesor','EspecialidadProfesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('profesorPeriodo','ProfesorPeriodoController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('periodoProfesor','PeriodoProfesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('materiaprofesorAnomalia','MateriaprofesorAnomaliaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('anomaliaMateriaprofesor','AnomaliaMateriaprofesorController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('estudianteAnomalia','EstudianteAnomaliaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('anomaliaEstudiante','AnomaliaEstudianteController',[ 
+    'only'=>['index','show']]
+);
 
 Route::group([ 
 ], function () { 

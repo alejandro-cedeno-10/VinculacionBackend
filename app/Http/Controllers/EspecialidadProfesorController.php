@@ -21,7 +21,7 @@ class EspecialidadProfesorController extends Controller
     public function index()
     {
         $especialidad = QueryBuilder::for(especialidad::class)
-            ->allowedIncludes('profesors')
+            ->allowedIncludes('Profesores')
             ->get();
 
         return response()->json([
