@@ -206,13 +206,13 @@ class ParaleloController extends Controller
 
         $Especialidades=$paralelo->Especialidades->first();
 
-        $Periodo_Lectivos=$paralelo->Periodo_Lectivos->first();
+        $PeriodoLectivo=$paralelo->PeriodoLectivo->first();
 
         $Matriculas=$paralelo->Matriculas->first();
 
         $Cuestionarios=$paralelo->Cuestionarios->first();
 
-		if ($Profesores || $Materias || $Cursos || $Especialidades || $Periodo_Lectivos || $Matriculas || $Cuestionarios)
+		if ($Profesores || $Materias || $Cursos || $Especialidades || $PeriodoLectivo || $Matriculas || $Cuestionarios)
 		{
 			$paralelo->delete();
 			

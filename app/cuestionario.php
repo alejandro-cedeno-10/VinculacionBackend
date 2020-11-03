@@ -70,7 +70,7 @@ class cuestionario extends Model
         return $this->belongsTo('App\especialidad','idEspecialidad','idEspecialidad');
     }
 
-    public function Periodo_Lectivo()
+    public function PeriodoLectivo()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\periodo_lectivo','idPeriodoLectivo','idPeriodoLectivo');

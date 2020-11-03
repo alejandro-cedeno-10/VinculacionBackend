@@ -207,11 +207,11 @@ class MateriaController extends Controller
 
         $Especialidades=$materia->Especialidades->first();
 
-        $Periodo_Lectivos=$materia->Periodo_Lectivos->first();
+        $PeriodoLectivo=$materia->PeriodoLectivo->first();
 
         $Tipo_Asignatura=$materia->Tipo_Asignatura->first();
 
-		if ($Profesores || $Cursos || $Paralelos || $Especialidades || $Periodo_Lectivos || $Tipo_Asignatura)
+		if ($Profesores || $Cursos || $Paralelos || $Especialidades || $PeriodoLectivo || $Tipo_Asignatura)
 		{
 			$materia->delete();
 			

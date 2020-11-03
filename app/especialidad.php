@@ -77,7 +77,7 @@ class especialidad extends Model
                 'idPeriodoLectivo','numeroHoras');
     }
 
-    public function Periodo_Lectivos()
+    public function PeriodoLectivo()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\periodo_lectivo','materia_profesors','idEspecialidad','idPeriodoLectivo')

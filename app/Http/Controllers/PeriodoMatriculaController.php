@@ -22,7 +22,7 @@ class PeriodoMatriculaController extends Controller
     public function index()
     {
         $periodo_lectivo = QueryBuilder::for(periodo_lectivo::class)
-            ->allowedIncludes('matriculas')
+            ->allowedIncludes(['matriculas'])
             ->get();
 
         return response()->json([

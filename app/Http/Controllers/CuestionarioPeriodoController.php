@@ -75,7 +75,7 @@ class CuestionarioPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivo=$cuestionario->Periodo_Lectivo;
+        $periodo_lectivo=$cuestionario->PeriodoLectivo;
 
         return response()->json([
             'status'=>true,

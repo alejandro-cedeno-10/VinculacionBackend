@@ -22,7 +22,7 @@ class EstudianteEstadoController extends Controller
     public function index()
     {
         $estudiante = QueryBuilder::for(estudiante::class)
-            ->allowedIncludes('estados')
+            ->allowedIncludes('Estados')
             ->get();
 
         return response()->json([

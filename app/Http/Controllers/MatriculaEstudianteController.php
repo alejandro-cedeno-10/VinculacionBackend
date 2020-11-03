@@ -22,7 +22,7 @@ class MatriculaEstudianteController extends Controller
     public function index()
     {
         $matricula = QueryBuilder::for(matricula::class)
-            ->allowedIncludes('estudiantes')
+            ->allowedIncludes(['Curso','Paralelo','Especialidad','PeriodoLectivo','Estudiante.user'])
             ->get();
 
         return response()->json([

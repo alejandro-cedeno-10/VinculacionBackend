@@ -239,11 +239,11 @@ class ProfesorController extends Controller
 
         $Especialidades=$profesor->Especialidades->first();
 
-        $Periodo_Lectivos=$profesor->Periodo_Lectivos->first();
+        $PeriodoLectivo=$profesor->PeriodoLectivo->first();
 
         $Anomalias=$profesor->Anomalias->first();
 
-		if ($User || $Materias || $Cursos || $Paralelos || $Especialidades || $Periodo_Lectivos || $Anomalias)
+		if ($User || $Materias || $Cursos || $Paralelos || $Especialidades || $PeriodoLectivo || $Anomalias)
 		{
 			$profesor->delete();
 			

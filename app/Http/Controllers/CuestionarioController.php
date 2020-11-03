@@ -148,11 +148,11 @@ class CuestionarioController extends Controller
 
         $Especialidad=$cuestionario->Especialidad->first();
 
-        $Periodo_Lectivo=$cuestionario->Periodo_Lectivo->first();
+        $PeriodoLectivo=$cuestionario->PeriodoLectivo->first();
         
         $Preguntas=$cuestionario->Preguntas->first();
 
-		if ($Cuerpo_dece || $Curso || $Paralelo || $Especialidad || $Periodo_Lectivo || $Preguntas)
+		if ($Cuerpo_dece || $Curso || $Paralelo || $Especialidad || $PeriodoLectivo || $Preguntas)
 		{
 			$cuestionario->delete();
 			

@@ -6,6 +6,8 @@ use Image;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Cache;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class UserController extends Controller
 {
@@ -73,7 +75,25 @@ class UserController extends Controller
 			'status'=>true,
 			'data'=>$user],200);
 
-    }
+	}
+
+	public function showRole()
+	{
+		
+		$allUser = QueryBuilder::for(User::class)
+			->allowedFilters([
+				AllowedFilter::exact('idPersona')
+			])
+          	->allowedIncludes('Estudiante','Profesor','Dece','Representante') 
+            ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$allUser],200);
+
+	}
+	
+
 
     /**
 	 * Update the specified resource in storage.

@@ -21,9 +21,8 @@ class EstadosEstudiantesController extends Controller
 		{
 			// Caché válida durante 15 segundos.
             return estado_estudiante::where([
-                'idEstado' => $request->idEstado,    
-                'idEstudiante' => $request->idEstudiante,
-                'idMatricula' => $request->idMatricula])->first();
+                'idEstudiante' => $request->idEstudiante,    
+                'fecha' => $request->fecha])->first();
         });
         
 		if($estado_estudiante)
@@ -31,16 +30,15 @@ class EstadosEstudiantesController extends Controller
 			return response()->json(
 				['errors'=>array(['status'=>false,
 				'message'=>'Ya existe esta relacion de estado_estudiante',
-                'identificador_1'=>$request->idEstado,
-                'identificador_2'=>$request->idEstudiante,
-                'identificador_3'=>$request->idMatricula                
+                'identificador_1'=>$request->idEstudiante,
+                'identificador_2'=>$request->fecha                
 			])],200);
         }
         
 		$request->validate([
             'idEstado'     => 'required|numeric|exists:estados,idEstado',
             'idEstudiante'     => 'required|string|max:10|exists:estudiantes,idEstudiante',
-            'idMatricula'     => 'required|string|max:10|exists:matriculas,idMatricula'            
+            'idMatricula'     => 'required|numeric|exists:matriculas,idMatricula'            
         ]);
 
         $estado_estudiante=Cache::remember('estado_estudiantes',15/60, function() use ($request)
@@ -61,15 +59,15 @@ class EstadosEstudiantesController extends Controller
      * @param  \App\estado_estudiante  $estado_estudiante
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, $id2, $id3)
+    public function destroy($id,$id2)
     {
-        $estado_estudiante=Cache::remember('estado_estudiantes',15/60, function() use ($id,$id2,$id3)
+        $estado_estudiante=Cache::remember('estado_estudiantes',15/60, function() use ($id,$id2)
 		{
 			// Caché válida durante 15 segundos.
-			return estado_estudiante::where([
-                'idEstado' => $id, 
-                'idEstudiante' => $id2,  
-                'idMatricula' => $id3])->first();
+			return estado_estudiante::where([ 
+                'idEstudiante' => $id,    
+                'fecha' => $id2
+                ])->first();
         });
         
 		if(!$estado_estudiante)
@@ -78,18 +76,16 @@ class EstadosEstudiantesController extends Controller
 				['errors'=>array(['code'=>404,
 				'message'=>'No se encuentra un estado_estudiante con ese identificador.',
                 'identificador_1'=>$id,
-                'identificador_2'=>$id2,
-                'identificador_3'=>$id3
+                'identificador_2'=>$id2
 			])],404);
 		}
 
-        $estado_estudiante=Cache::remember('estado_estudiantes',15/60, function() use ($id,$id2,$id3)
+        $estado_estudiante=Cache::remember('estado_estudiantes',15/60, function() use ($id,$id2)
 		{
 			// Caché válida durante 15 segundos.
 			estado_estudiante::where([
-                'idEstado' => $id, 
-                'idEstudiante' => $id2,
-                'idMatricula' => $id3])->delete();
+                'idEstudiante' => $id,    
+                'fecha' => $id2])->delete();
         });
 		
 		return response()->json([

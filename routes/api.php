@@ -34,6 +34,7 @@ Route::group([
             'except'=>['create','store','edit']]
         );
         Route::post('users_avatar', 'UserController@update_avatar');
+        Route::get('user_showRole', 'UserController@showRole');
 }); 
 
 
@@ -41,6 +42,7 @@ Route::resource('estudiantes','EstudianteController',[
     'except'=>['create','edit']]
 );
 
+Route::get('estudiantes_showOrden', 'EstudianteController@showOrden');
 
 Route::resource('representantes','RepresentanteController',[ 
     'except'=>['create','edit']]
@@ -135,6 +137,10 @@ Route::resource('cuestionarios.preguntas','CuestionariosPreguntasController',[
     'only'=>['store','destroy']]
 );
 
+
+Route::resource('estados.estudiantes','EstadosEstudiantesController',[ 
+    'only'=>['store','destroy']]
+);
 
 
 Route::resource('opciones','OpcionController',[ 
@@ -278,6 +284,32 @@ Route::resource('estudianteAnomalia','EstudianteAnomaliaController',[
 );
 
 Route::resource('anomaliaEstudiante','AnomaliaEstudianteController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('estadoEstudiante','EstadoEstudianteController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('estudianteEstado','EstudianteEstadoController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('estudianteMatricula','EstudianteMatriculaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::get('estudianteMatricula_showAll', 'EstudianteMatriculaController@showAll');
+
+Route::resource('matriculaEstudiante','MatriculaEstudianteController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('periodoMatricula','PeriodoMatriculaController',[ 
+    'only'=>['index','show']]
+);
+
+Route::resource('periodoCurso','PeriodoCursoController',[ 
     'only'=>['index','show']]
 );
 

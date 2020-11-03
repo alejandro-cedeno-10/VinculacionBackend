@@ -218,9 +218,9 @@ class MatriculaController extends Controller
 
         $Especialidad=$matricula->Especialidad->first();
 
-        $Periodo_Lectivo=$matricula->Periodo_Lectivo->first();
+        $PeriodoLectivo=$matricula->PeriodoLectivo->first();
              
-		if ($Estados || $Estudiantes_Pivote || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $Periodo_Lectivo)
+		if ($Estados || $Estudiantes_Pivote || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $PeriodoLectivo)
 		{
 			$matricula->delete();
 			

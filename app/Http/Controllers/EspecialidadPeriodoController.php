@@ -75,7 +75,7 @@ class EspecialidadPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivos=$especialidad->Periodo_Lectivos;
+        $periodo_lectivos=$especialidad->PeriodoLectivo;
 
         return response()->json([
             'status'=>true,

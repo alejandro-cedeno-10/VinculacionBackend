@@ -206,13 +206,13 @@ class EspecialidadController extends Controller
         
         $Paralelos=$especialidad->Paralelos->first();
         
-        $Periodo_Lectivos=$especialidad->Periodo_Lectivos->first();
+        $PeriodoLectivo=$especialidad->PeriodoLectivo->first();
 
         $Matriculas=$especialidad->Matriculas->first();
 
         $Cuestionarios=$especialidad->Cuestionarios->first();
         
-		if ($Profesores || $Materias || $Cursos || $Paralelos || $Periodo_Lectivos || $Matriculas || $Cuestionarios)
+		if ($Profesores || $Materias || $Cursos || $Paralelos || $PeriodoLectivo || $Matriculas || $Cuestionarios)
 		{
 			$especialidad->delete();
 			

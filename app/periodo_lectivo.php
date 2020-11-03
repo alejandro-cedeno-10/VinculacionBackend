@@ -68,6 +68,15 @@ class periodo_lectivo extends Model
                 ->withPivot('idMateriaProfesor','idProfesor','idParalelo','idEspecialidad',
                 'idMateria','numeroHoras');
     }
+
+    public function CursosParalelos()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->hasMany('App\curso','materia_profesors','idPeriodoLectivo','idCurso')
+                ->withPivot('idMateriaProfesor','idProfesor','idParalelo','idEspecialidad',
+                'idMateria','numeroHoras');
+    }
+
     public function Paralelos()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario

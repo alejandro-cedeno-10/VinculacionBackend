@@ -74,7 +74,7 @@ class CursoPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivos=$curso->Periodo_Lectivos;
+        $periodo_lectivos=$curso->PeriodoLectivo;
 
         return response()->json([
             'status'=>true,

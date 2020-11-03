@@ -75,7 +75,7 @@ class MatriculaPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivo=$matricula->Periodo_Lectivo;
+        $periodo_lectivo=$matricula->PeriodoLectivo;
 
         return response()->json([
             'status'=>true,

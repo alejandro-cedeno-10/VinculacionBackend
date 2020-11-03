@@ -76,7 +76,7 @@ class ParaleloPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivos=$paralelo->Periodo_Lectivos;
+        $periodo_lectivos=$paralelo->PeriodoLectivo;
 
         return response()->json([
             'status'=>true,

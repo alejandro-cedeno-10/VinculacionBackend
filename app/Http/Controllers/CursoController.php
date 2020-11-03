@@ -206,13 +206,13 @@ class CursoController extends Controller
 
         $Especialidades=$curso->Especialidades->first();
 
-        $Periodo_Lectivos=$curso->Periodo_Lectivos->first();
+        $PeriodoLectivo=$curso->PeriodoLectivo->first();
 
         $Matriculas=$curso->Matriculas->first();
 
         $Cuestionarios=$curso->Cuestionarios->first();
 
-		if ($Profesores || $Materias || $Paralelos || $Especialidades || $Periodo_Lectivos || $Matriculas || $Cuestionarios)
+		if ($Profesores || $Materias || $Paralelos || $Especialidades || $PeriodoLectivo || $Matriculas || $Cuestionarios)
 		{
 			$curso->delete();
 			

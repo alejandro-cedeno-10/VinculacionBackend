@@ -8,6 +8,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class EstudianteMatriculaController extends Controller
 {
@@ -22,7 +23,7 @@ class EstudianteMatriculaController extends Controller
     public function index()
     {
         $estudiante = QueryBuilder::for(estudiante::class)
-            ->allowedIncludes('matriculas')
+            ->allowedIncludes(['Matriculas.Curso','Matriculas.Paralelo','Matriculas.Especialidad','Matriculas.PeriodoLectivo'])
             ->get();
 
         return response()->json([
@@ -83,6 +84,23 @@ class EstudianteMatriculaController extends Controller
             'data'=>$estudiante
         ], 200);
     }
+    
+    public function showAll()
+    {
+        $estudiante = QueryBuilder::for(estudiante::class)
+            ->allowedFilters([
+                AllowedFilter::exact('idEstudiante')
+            ])
+            ->allowedIncludes(['Matriculas.Curso','Matriculas.Paralelo','Matriculas.Especialidad','Matriculas.PeriodoLectivo'])
+            ->get();
+
+        return response()->json([
+        'status'=>true,
+        'data'=>$estudiante
+            ], 200);
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.

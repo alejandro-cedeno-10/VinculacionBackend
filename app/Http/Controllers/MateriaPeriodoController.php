@@ -76,7 +76,7 @@ class MateriaPeriodoController extends Controller
             ])],404);
         }
 
-        $periodo_lectivos=$materia->Periodo_Lectivos;
+        $periodo_lectivos=$materia->PeriodoLectivo;
 
         return response()->json([
             'status'=>true,
