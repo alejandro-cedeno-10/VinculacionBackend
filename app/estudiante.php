@@ -60,7 +60,7 @@ class estudiante extends Model
         return $this->belongsTo('App\user','idEstudiante','idPersona');
     }
     
-    public function User_Representante()
+    public function UserRepresentante()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsTo('App\user','idRepresentante','idPersona','idRepresentante');
@@ -73,7 +73,7 @@ class estudiante extends Model
                 ->withPivot('fecha','idMatricula','descripcion');
     }
     
-    public function Matriculas_Pivote()
+    public function MatriculasPivote()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\matricula','estado_estudiantes','idEstudiante','idMatricula')

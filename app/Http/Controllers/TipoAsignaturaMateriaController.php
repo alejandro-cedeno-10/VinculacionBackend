@@ -18,7 +18,7 @@ class TipoAsignaturaMateriaController extends Controller
     public function index()
     {
         $tipo_asignatura = QueryBuilder::for(tipo_asignatura::class)
-            ->allowedIncludes('Materias')
+            ->allowedIncludes('materias')
             ->get();
 
         return response()->json([
@@ -72,7 +72,7 @@ class TipoAsignaturaMateriaController extends Controller
             ])],404);
         }
 
-        $Materias=$tipo_asignatura->Materias;
+        $materias=$tipo_asignatura->materias;
 
         return response()->json([
             'status'=>true,

@@ -205,11 +205,11 @@ class CuerpoDeceController extends Controller
 
         $Persona=$cuerpo_dece->Persona->first();
         
-        $PeriodoLectivo=$cuerpo_dece->PeriodoLectivo->first();
+        $PeriodoLectivo=$cuerpo_dece->PeriodoLectivos->first();
 
         $Cuestionarios=$cuerpo_dece->Cuestionarios->first();
 
-		if ($Persona || $PeriodoLectivo || $Cuestionarios)
+		if ($Persona || $PeriodoLectivos || $Cuestionarios)
 		{
 			$cuerpo_dece->delete();
 			

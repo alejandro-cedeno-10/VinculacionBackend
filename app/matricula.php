@@ -54,7 +54,7 @@ class matricula extends Model
                 ->withPivot('fecha','idEstudiante','descripcion');
     }
     
-    public function Estudiantes_Pivote()
+    public function EstudiantesPivote()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->belongsToMany('App\estudiante','estado_estudiantes','idMatricula','idEstudiante')

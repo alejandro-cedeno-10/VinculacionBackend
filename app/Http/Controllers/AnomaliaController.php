@@ -229,15 +229,15 @@ class AnomaliaController extends Controller
 			])],404);
 		}
 
-		$Materia_Profesor=$anomalia->Materia_Profesor->first();
+		$MateriaProfesor=$anomalia->MateriaProfesor->first();
 
 		$Profesores=$anomalia->Profesores->first();
 
-        $SubCategoria=$anomalia->SubCategoria->first();
+        $subcategorias=$anomalia->subcategorias->first();
         
         $Estudiantes=$anomalia->Estudiantes->first();
         
-		if ($Materia_Profesor || $Profesores || $SubCategoria || $Estudiantes)
+		if ($MateriaProfesor || $Profesores || $subcategorias || $Estudiantes)
 		{
 			$anomalia->delete();
 			

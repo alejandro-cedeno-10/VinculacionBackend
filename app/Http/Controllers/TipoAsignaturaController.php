@@ -198,9 +198,9 @@ class TipoAsignaturaController extends Controller
 			])],404);
 		}
 
-		$Materias=$tipo_asignatura->Materias->first();
+		$materias=$tipo_asignatura->materias->first();
 
-		if ($Materias)
+		if ($materias)
 		{
 			$tipo_asignatura->delete();
 			

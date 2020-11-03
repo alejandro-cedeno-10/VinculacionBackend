@@ -86,6 +86,10 @@ Route::resource('cursos','CursoController',[
     'except'=>['create','edit']]
 );
 
+Route::resource('paralelos','ParaleloController',[ 
+    'except'=>['create','edit']]
+);
+
 Route::resource('especialidades','EspecialidadController',[ 
     'except'=>['create','edit']]
 );
@@ -120,37 +124,9 @@ Route::resource('anomalias.profesors','DiagnosticoTutorController',[
     'only'=>['store','destroy']]
 );
 
-Route::resource('preguntas','PreguntaController',[ 
-    'except'=>['create','edit']]
-);
-
-
-Route::resource('respuestas','RespuestaController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::resource('cuestionarios','CuestionarioController',[ 
-    'except'=>['create','edit','update']]
-);
-
-Route::resource('cuestionarios.preguntas','CuestionariosPreguntasController',[ 
-    'only'=>['store','destroy']]
-);
-
-
 Route::resource('estados.estudiantes','EstadosEstudiantesController',[ 
     'only'=>['store','destroy']]
 );
-
-
-Route::resource('opciones','OpcionController',[ 
-    'except'=>['create','edit']]
-);
-
-Route::resource('paralelos','ParaleloController',[ 
-    'except'=>['create','edit']]
-);
-
 
 Route::resource('userEstudiante','UserEstudianteController',[ 
     'only'=>['index','show']]

@@ -206,7 +206,7 @@ class MatriculaController extends Controller
 
         $Estados=$matricula->Estados->first();
         
-        $Estudiantes_Pivote=$matricula->Estudiantes_Pivote->first();
+        $EstudiantesPivote=$matricula->EstudiantesPivote->first();
         
         $Estudiante=$matricula->Estudiante->first();
                 
@@ -220,7 +220,7 @@ class MatriculaController extends Controller
 
         $PeriodoLectivo=$matricula->PeriodoLectivo->first();
              
-		if ($Estados || $Estudiantes_Pivote || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $PeriodoLectivo)
+		if ($Estados || $EstudiantesPivote || $Estudiante || $Representante || $Curso || $Paralelo || $Especialidad || $PeriodoLectivo)
 		{
 			$matricula->delete();
 			

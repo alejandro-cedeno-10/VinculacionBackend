@@ -229,19 +229,19 @@ class EstudianteController extends Controller
 			])],404);
 		}
 
-		$User_Estudiante=$estudiante->User_Estudiante->first();
+		$user=$estudiante->user->first();
 		
-        $User_Representante=$estudiante->User_Representante->first();
+        $UserRepresentante=$estudiante->UserRepresentante->first();
         
         $Estados=$estudiante->Estados->first();
 
-        $Matriculas_Pivote=$estudiante->Matriculas_Pivote->first();
+        $MatriculasPivote=$estudiante->MatriculasPivote->first();
 
         $Matriculas=$estudiante->Matriculas->first();
 
         $Anomalias=$estudiante->Anomalias->first();
 
-		if ($User_Estudiante || $User_Representante || $Estados || $Matriculas_Pivote || $Matriculas || $Anomalias)
+		if ($user || $UserRepresentante || $Estados || $MatriculasPivote || $Matriculas || $Anomalias)
 		{
 			$estudiante->delete();
 			

@@ -76,7 +76,7 @@ class AsignaturaMateriaController extends Controller
             ])],404);
         }
 
-        $materias=$tipo_asignatura->Materias;
+        $materias=$tipo_asignatura->materias;
 
         return response()->json([
             'status'=>true,

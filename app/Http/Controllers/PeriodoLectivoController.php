@@ -238,9 +238,9 @@ class PeriodoLectivoController extends Controller
 
         $Cuestionarios=$periodo_lectivo->Cuestionarios->first();
 
-        $Cuerpos_dece=$periodo_lectivo->Cuerpos_dece->first();
+        $CuerposDece=$periodo_lectivo->CuerposDece->first();
 
-		if ($Profesores || $Materias || $Cursos || $Paralelos || $Especialidades || $Matriculas || $Cuestionarios || $Cuerpos_dece )
+		if ($Profesores || $Materias || $Cursos || $Paralelos || $Especialidades || $Matriculas || $Cuestionarios || $CuerposDece )
 		{
 			$periodo_lectivo->delete();
 			

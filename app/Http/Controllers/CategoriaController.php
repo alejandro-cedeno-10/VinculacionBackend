@@ -200,9 +200,9 @@ class CategoriaController extends Controller
 			])],404);
 		}
 
-		$SubCategorias=$categoria->SubCategorias->first();
+		$subcategorias=$categoria->subcategorias->first();
 
-		if ($SubCategorias)
+		if ($subcategorias)
 		{
 			$categoria->delete();
 			
