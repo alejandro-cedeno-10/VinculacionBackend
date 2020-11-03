@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\user;
+use App\User;
 
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -20,7 +20,7 @@ class UserRepresentanteController extends Controller
      */
     public function index()
     {
-        $user = QueryBuilder::for(user::class)
+        $user = QueryBuilder::for(User::class)
             ->allowedIncludes('Representante')
             ->get();
 
@@ -63,7 +63,7 @@ class UserRepresentanteController extends Controller
         $user=Cache::remember('user',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return user::find($id);  
+			return User::find($id);  
 		});
 
         if(!$user)

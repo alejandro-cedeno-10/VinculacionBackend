@@ -57,7 +57,7 @@ class cuerpo_dece extends Model
     public function Persona()
 	{
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
-        return $this->belongsTo('App\user','idPersona','idPersona');
+        return $this->belongsTo('App\User','idPersona','idPersona');
     }
 
     public function PeriodoLectivos()
