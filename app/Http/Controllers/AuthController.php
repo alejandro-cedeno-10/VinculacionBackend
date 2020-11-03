@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Image;
 
-use App\User;
+use App\user;
 use App\Notifications\SignupActivate;
 
 use Illuminate\Support\Facades\Auth;

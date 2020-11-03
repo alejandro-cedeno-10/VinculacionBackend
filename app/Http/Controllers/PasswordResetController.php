@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\User;
+use App\user;
 use App\PasswordReset;
 use App\Http\Controllers\Controller;
 use App\Notifications\PasswordResetRequest;

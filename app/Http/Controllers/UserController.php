@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Image;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\user;
 use Illuminate\Support\Facades\Cache;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -26,7 +26,7 @@ class UserController extends Controller
 		$user=Cache::remember('users',30/60, function()
             {
                 // Caché válida durante 30 segundos.
-                return User::all();
+                return user::all();
             });
 
             // Con caché.
@@ -59,7 +59,7 @@ class UserController extends Controller
 		$user=Cache::remember('users',30/60, function() use ($id)
 		{
 			// Caché válida durante 30 segundos.
-			return User::find($id);
+			return user::find($id);
 		});
 
 		if(!$user)
@@ -80,7 +80,7 @@ class UserController extends Controller
 	public function showRole()
 	{
 		
-		$allUser = QueryBuilder::for(User::class)
+		$allUser = QueryBuilder::for(user::class)
 			->allowedFilters([
 				AllowedFilter::exact('idPersona')
 			])
@@ -107,7 +107,7 @@ class UserController extends Controller
 		$user=Cache::remember('users',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return User::find($id);
+			return user::find($id);
 		});
 
 		if(!$user)
@@ -294,7 +294,7 @@ class UserController extends Controller
 		$user=Cache::remember('users',15/60, function() use ($request)
 		{
 			// Caché válida durante 15 segundos.
-			return User::find($request->idPersona);
+			return user::find($request->idPersona);
 		});
 
 		$avatar = $request->file('avatar');    
@@ -324,7 +324,7 @@ class UserController extends Controller
 		$user=Cache::remember('users',15/60, function() use ($id)
 		{
 			// Caché válida durante 15 segundos.
-			return User::find($id);
+			return user::find($id);
 		});
 
 		if(!$user)
