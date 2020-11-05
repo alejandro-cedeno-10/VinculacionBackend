@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Mensajes;
 
 use Spatie\QueryBuilder\QueryBuilder;
-
+use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -110,6 +111,22 @@ class UserMensajeController extends Controller
             'status'=>true,
             'data'=>$user
         ], 200);
+    }
+
+
+    public function showEmisorReceptor()
+    {
+        $mensajes = QueryBuilder::for(Mensajes::class)
+        ->allowedIncludes(['Persona'])
+        ->allowedFilters([
+            AllowedFilter::exact('mensajes.idPersona', null),
+            AllowedFilter::exact('mensajes.receptor', null)
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$mensajes],200);
     }
 
     /**

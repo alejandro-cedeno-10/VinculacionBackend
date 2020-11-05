@@ -50,4 +50,28 @@ class materia_profesor extends Model
 		// $this hace referencia al objeto que tengamos en ese momento del Usuario
         return $this->hasMany('App\anomalia','idMateriaProfesor','idMateriaProfesor');
     }
+
+    public function Curso()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\curso','idCurso','idCurso');
+    }
+
+    public function Paralelo()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\paralelo','idParalelo','idParalelo');
+    }
+
+    public function Especialidad()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\especialidad','idEspecialidad','idEspecialidad');
+    }
+
+    public function PeriodoLectivo()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\periodo_lectivo','idPeriodoLectivo','idPeriodoLectivo');
+    }
 }

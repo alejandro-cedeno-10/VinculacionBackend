@@ -44,6 +44,8 @@ Route::resource('estudiantes','EstudianteController',[
 
 Route::get('estudiantes_showOrden', 'EstudianteController@showOrden');
 
+Route::get('estudiantes_showEstados', 'EstudianteController@showEstados');
+
 Route::resource('representantes','RepresentanteController',[ 
     'except'=>['create','edit']]
 );
@@ -111,6 +113,11 @@ Route::resource('materiasProfesor','MateriasProfesorsController',[
     'only'=>['store','destroy']]
 );
 
+Route::get('materiasProfesorAllCursos', 'MateriaProfesorController@showAllCursos');
+
+Route::get('materiasProfesorAllLectivos', 'MateriaProfesorController@showAllLectivos');
+
+Route::get('materiasProfesor_showAllAnomalia', 'MateriaprofesorAnomaliaController@showAllAnomalias');
 
 Route::resource('anomalias','AnomaliaController',[ 
     'except'=>['create','edit']]
@@ -170,6 +177,10 @@ Route::resource('mensajeUser','MensajeUserController',[
 );
 
 Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');////////////////////////////////////
+
+Route::get('userMensaje_receptor_emisor', 'UserMensajeController@showEmisorReceptor');
+
+Route::get('userMensaje_receptor_emisor', 'UserMensajeController@showEmisorReceptor');
 
 Route::resource('categoriaSubcategoria','CategoriaSubcategoriasController',[ 
     'only'=>['index','show']]

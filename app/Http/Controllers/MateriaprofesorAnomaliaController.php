@@ -8,6 +8,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class MateriaprofesorAnomaliaController extends Controller
 {
@@ -81,6 +82,31 @@ class MateriaprofesorAnomaliaController extends Controller
             'status'=>true,
             'data'=>$materia_profesor
         ], 200);
+    }
+
+
+    public function showAllAnomalias()
+    {
+        $anomalias = QueryBuilder::for(materia_profesor::class)
+        ->allowedIncludes(['Anomalias'])
+        ->join('anomalias', 'anomalias.idMateriaProfesor', 'materia_profesors.idMateriaProfesor')
+        ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')    
+        ->join('categorias', 'categorias.idCategoria', 'subcategorias.idCategoria') 
+        ->join('cursos', 'cursos.idCurso', 'materia_profesors.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'materia_profesors.idParalelo')
+        ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'materia_profesors.idPeriodoLectivo')
+        ->join('reporte_estudiantes','reporte_estudiantes.idAnomalia','anomalias.idAnomalia')
+        ->join('users','users.idPersona','reporte_estudiantes.idEstudiante')
+        ->allowedFilters([
+            AllowedFilter::exact('cursos.curso', null),
+            AllowedFilter::exact('paralelos.paralelo', null),
+            AllowedFilter::exact('periodo_lectivos.periodoLectivo', null)
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$anomalias],200);
     }
 
     /**

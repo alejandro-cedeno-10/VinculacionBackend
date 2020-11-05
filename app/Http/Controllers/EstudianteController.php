@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\estudiante;
+use App\estado_estudiante;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedInclude;
+
 
 class EstudianteController extends Controller
 {
@@ -121,6 +125,26 @@ class EstudianteController extends Controller
 			'data'=>$estudiantes],200);
     }
 
+    public function showEstados(Request $request)
+    {
+        
+        $estudiantes = QueryBuilder::for(estudiante::class)
+        ->allowedIncludes(['Estados',
+        AllowedInclude::count('EstadosCounts')])
+        ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
+        ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'matriculas.idPeriodoLectivo')
+        ->allowedFilters([
+            AllowedFilter::exact('cursos.curso', null),
+            AllowedFilter::exact('paralelos.paralelo', null),
+            AllowedFilter::exact('periodo_lectivos.periodoLectivo', null)
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$estudiantes],200);
+    }
     /**
      * Show the form for editing the specified resource.
      *

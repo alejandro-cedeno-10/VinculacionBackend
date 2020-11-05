@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\materia;
+use App\materia_profesor;
 
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -81,6 +83,40 @@ class MateriaProfesorController extends Controller
             'status'=>true,
             'data'=>$materia
         ], 200);
+    }
+
+
+    public function showAllLectivos()
+    {
+        $cursos = QueryBuilder::for(materia_profesor::class)
+        ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'materia_profesors.idPeriodoLectivo')
+        ->allowedFilters([
+            AllowedFilter::exact('materia_profesors.idProfesor', null),
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$cursos],200);
+    }
+
+    public function showAllCursos()
+    {
+        $cursos = QueryBuilder::for(materia_profesor::class)
+        ->join('materias', 'materias.idMateria', 'materia_profesors.idMateria')    
+        ->join('tipo_asignaturas', 'tipo_asignaturas.idTipoAsignatura', 'materias.idTipoAsignatura') 
+        ->join('cursos', 'cursos.idCurso', 'materia_profesors.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'materia_profesors.idParalelo')
+        ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'materia_profesors.idPeriodoLectivo')
+        ->allowedFilters([
+            AllowedFilter::exact('materia_profesors.idProfesor', null),
+            AllowedFilter::exact('periodo_lectivos.periodoLectivo', null)
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$cursos],200);
     }
 
     /**

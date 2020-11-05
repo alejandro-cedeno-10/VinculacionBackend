@@ -30,4 +30,10 @@ class estado_estudiante extends Model
     protected $hidden = [
         'created_at','updated_at'
     ];
+
+    public function estado()
+	{
+		// $this hace referencia al objeto que tengamos en ese momento del Usuario
+        return $this->belongsTo('App\estado','idEstado','idEstado');
+    }
 }
