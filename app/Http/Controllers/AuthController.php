@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
 
-
 class AuthController extends Controller
 {
     
@@ -46,9 +45,9 @@ class AuthController extends Controller
         //Encripto clave 
         $user->password=bcrypt($request->idPersona);
 
-        $idPersona = substr($request->idPersona, -4); 
+        /* $idPersona = substr($request->idPersona, -4);  */
 
-        $user->email=$request->apellidoPaterno.$idPersona.'@'.'nacional'.'.'.'edu'.'.'.'ec';
+        $user->email=$request->apellidoPaterno.$request->idPersona.'@'.'nacional'.'.'.'edu'.'.'.'ec';
 
         if($request->hasFile('avatar')){
             $avatar = $request->file('avatar');    
@@ -73,30 +72,16 @@ class AuthController extends Controller
             'password'    => 'required|string',
             'remember_me' => 'boolean',
         ]);
-
-        
-        $user=Cache::remember('users',30/60, function() use ($request)
-            {
-                // Caché válida durante 30 segundos.
-                return User::where( 'email', $request->email )->first();
-            });
-
-
         $credentials = request(['email', 'password']);
-       
-       
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
+                'message' => 'Unauthorized'], 401);
         }
         $user = $request->user();
-
-       
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me) {
-            $token->expires_at = Carbon::now()->addWeeks(7);
+            $token->expires_at = Carbon::now()->addWeeks(1);
         }
         $token->save();
         return response()->json([
@@ -112,18 +97,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
        
-        if ( ! DB::table( 'oauth_access_tokens' )->where( 'id', $request->user( )->token( )->id )->exists( ) )
-        return response( )->json([
-            'success' => false,
-            'message' => 'No se encontró ninguna sesión de usuario activa.',
-            'code'     => 404,
-        ], 404 ); // Si no hay una sesión activa del usuario retorna un error 404 (Not Found)
-
-        // Elimina el Token de acceso al sistema del usuario
-        if($request->user()->token()->delete( )){
-            return response()->json(['message' => 
+        $request->user()->token()->revoke();
+        return response()->json(['message' => 
             'Successfully logged out']);
-        }
     }
 
     public function user(Request $request)
