@@ -45,7 +45,7 @@ class EspecialidadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'especialidad'     => 'required|string|max:30'               
+            'especialidad'     => 'required|string|max:30|unique:especialidads,especialidad'               
         ]);
 
         $especialidad=Cache::remember('especialidads',15/60, function() use ($request)

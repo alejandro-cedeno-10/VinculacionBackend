@@ -45,7 +45,7 @@ class ParaleloController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'paralelo'     => 'required|string|max:30'            
+            'paralelo'     => 'required|string|max:30|unique:paralelos,paralelo'            
         ]);
 
         $paralelo=Cache::remember('paralelos',15/60, function() use ($request)

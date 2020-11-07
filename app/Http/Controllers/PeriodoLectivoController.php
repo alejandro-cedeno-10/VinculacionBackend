@@ -47,7 +47,7 @@ class PeriodoLectivoController extends Controller
         $request->validate([
             'fechaInicio'     => 'required|date',
             'fechaFinal'     => 'required|date',
-            'periodoLectivo'     => 'required|string|max:30'            
+            'periodoLectivo'     => 'required|string|max:30|unique:periodo_lectivos,periodoLectivo'            
         ]);
 
         $periodo_lectivo=Cache::remember('periodo_lectivos',15/60, function() use ($request)

@@ -46,7 +46,7 @@ class MateriaController extends Controller
     {
         $request->validate([
             'idTipoAsignatura'     => 'required|numeric|exists:tipo_asignaturas,idTipoAsignatura',           
-            'nombreMateria'     => 'required|string|max:80' 
+            'nombreMateria'     => 'required|string|max:80|unique:materias,nombreMateria' 
         ]);
 
         $materia=Cache::remember('materias',15/60, function() use ($request)

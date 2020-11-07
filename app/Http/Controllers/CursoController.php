@@ -45,7 +45,7 @@ class CursoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'curso'     => 'required|string|max:30'            
+            'curso'     => 'required|string|max:30|unique:cursos,curso'            
         ]);
 
         $curso=Cache::remember('cursos',15/60, function() use ($request)
