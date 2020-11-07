@@ -45,7 +45,7 @@ class TipoAsignaturaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombreTipoAsignatura'     => 'required|string|max:75'                       
+            'nombreTipoAsignatura'     => 'required|string|max:75|unique:tipo_asignaturas,nombreTipoAsignatura'                       
         ]);
 
         $tipo_asignatura=Cache::remember('tipo_asignaturas',15/60, function() use ($request)
