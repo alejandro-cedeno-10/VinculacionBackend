@@ -14,6 +14,10 @@ class reporte_estudiante extends Model
 
     // Nombre de la tabla en MySQL.
     protected $table='reporte_estudiantes';
+
+    protected $primaryKey = null;
+
+    public $incrementing = false;
     
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [

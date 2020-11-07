@@ -14,6 +14,10 @@ class diagnostico_tutor extends Model
 
     // Nombre de la tabla en MySQL.
     protected $table='diagnostico_tutors';
+
+    protected $primaryKey = null;
+
+    public $incrementing = false;
     
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [

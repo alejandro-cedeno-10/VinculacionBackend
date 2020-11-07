@@ -15,6 +15,10 @@ class dece_lectivo extends Model
     // Nombre de la tabla en MySQL.
     protected $table='dece_lectivos';
 
+    protected $primaryKey = null;
+
+    public $incrementing = false;
+
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [
         'idPeriodoLectivo','idPersona'
