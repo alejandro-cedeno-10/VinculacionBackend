@@ -46,7 +46,7 @@ class DecesLectivosController extends Controller
                 return dece_lectivo::create($request->all());
             });
 	
-		$dece_lectivo->save();
+		
 	
         return response()->json(['data'=>$dece_lectivo,
             'message' => 'Relacion DECE_Lectivo Creada'], 201);
