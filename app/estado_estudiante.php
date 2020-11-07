@@ -15,6 +15,10 @@ class estado_estudiante extends Model
     // Nombre de la tabla en MySQL.
     protected $table='estado_estudiantes';
     
+    protected $primaryKey = null;
+
+    public $incrementing = false;
+
     // Atributos que se pueden asignar de manera masiva.
     protected $fillable = [
         'idEstudiante','fecha','idEstado','idMatricula','descripcion'
