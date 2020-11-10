@@ -19,6 +19,14 @@ class UserController extends Controller
 	 *
 	 * @return Response
 	 */
+
+	public function __construct()
+	{	
+		/* $this->middleware('auth:api');  
+	    $this->middleware('role:SuperAdmin',['only'=>['index']]); 
+		$this->middleware('role:cliente|SuperAdmin',['only'=>['show']]);  */ 
+	}
+	
     public function index()
 	{
       

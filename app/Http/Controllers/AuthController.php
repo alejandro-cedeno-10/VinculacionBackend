@@ -72,7 +72,24 @@ class AuthController extends Controller
             'password'    => 'required|string',
             'remember_me' => 'boolean',
         ]);
+
         $credentials = request(['email', 'password']);
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Unauthorized'], 401);
+        }
+
+        $user=Cache::remember('users',30/60, function() use ($request)
+		{
+			// Caché válida durante 30 segundos.
+			return User::where('email',$request->email)->first();
+        });
+        
+        return response()->json([
+            'status'=>true,
+            'data'=>$user],200);
+
+       /*  $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Unauthorized'], 401);
@@ -90,7 +107,7 @@ class AuthController extends Controller
             'expires_at'   => Carbon::parse(
                 $tokenResult->token->expires_at)
                     ->toDateTimeString(),
-        ]);
+        ]); */
     }
 
 
