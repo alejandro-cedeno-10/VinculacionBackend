@@ -149,6 +149,8 @@ class MateriaProfesorController extends Controller
             AllowedFilter::exact('cursos.curso', null),
             AllowedFilter::exact('paralelos.paralelo', null)
             ])
+        ->select('cursos.idCurso','paralelos.idParalelo')
+        ->GroupBy('cursos.idCurso')
         ->get();
 
 		return response()->json([
