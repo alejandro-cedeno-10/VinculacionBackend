@@ -119,6 +119,47 @@ class MateriaProfesorController extends Controller
 			'data'=>$cursos],200);
     }
 
+    public function showAllCursosSmall()
+    {
+        $cursos = QueryBuilder::for(materia_profesor::class)
+        ->join('materias', 'materias.idMateria', 'materia_profesors.idMateria')    
+        ->join('tipo_asignaturas', 'tipo_asignaturas.idTipoAsignatura', 'materias.idTipoAsignatura') 
+        ->join('cursos', 'cursos.idCurso', 'materia_profesors.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'materia_profesors.idParalelo')
+        ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'materia_profesors.idPeriodoLectivo')
+        ->select('cursos.idCurso','paralelos.idParalelo','cursos.curso', 'paralelos.paralelo','materias.nombreMateria')
+        ->allowedFilters([
+            AllowedFilter::exact('materia_profesors.idProfesor', null)
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$cursos],200);
+    }
+
+    public function showAllCursoParalelo()
+    {
+        $curso = QueryBuilder::for(materia_profesor::class)
+        ->join('materias', 'materias.idMateria', 'materia_profesors.idMateria')    
+        ->join('tipo_asignaturas', 'tipo_asignaturas.idTipoAsignatura', 'materias.idTipoAsignatura') 
+        ->join('cursos', 'cursos.idCurso', 'materia_profesors.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'materia_profesors.idParalelo')
+        ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'materia_profesors.idPeriodoLectivo')
+        ->select('cursos.idCurso','paralelos.idParalelo')
+        ->allowedFilters([
+            AllowedFilter::exact('cursos.curso', null),
+            AllowedFilter::exact('paralelos.paralelo', null)
+            ])
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$curso],200);
+    }
+
+    
+
     /**
      * Show the form for editing the specified resource.
      *

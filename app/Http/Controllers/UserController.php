@@ -87,17 +87,31 @@ class UserController extends Controller
 
 	public function showRole()
 	{
-		
-		$allUser = QueryBuilder::for(User::class)
-			->allowedFilters([
-				AllowedFilter::exact('idPersona')
-			])
-          	->allowedIncludes('Estudiante','Profesor','Dece','Representante') 
-            ->get();
+		$id=$_REQUEST['filter']['idPersona'];
+		$user=Cache::remember('user',15/60, function() use ($id)
+		{
+			// Caché válida durante 15 segundos.
+			return User::find($id);  
+		});
+
+		if($user->Estudiante->first()){
+			$Rol="Estudiante";
+		}
+
+		if($user->Profesor->first()){
+			$Rol="Profesor";
+		}
+
+		if($user->Representante->first()){
+			$Rol="Representante";
+		}
+
+		if($user->Dece->first()){
+			$Rol="Dece";
+		}
 
 		return response()->json([
-			'status'=>true,
-			'data'=>$allUser],200);
+			'Rol'=>$Rol],200);
 
 	}
 	

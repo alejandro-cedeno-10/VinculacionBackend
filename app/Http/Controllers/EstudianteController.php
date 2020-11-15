@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\estudiante;
+use App\estado;
 use App\estado_estudiante;
 
 use Illuminate\Http\Request;
@@ -125,7 +126,7 @@ class EstudianteController extends Controller
 			'data'=>$estudiantes],200);
     }
 
-    public function showEstados(Request $request)
+   /*  public function showEstados(Request $request)
     {
         
         $estudiantes = QueryBuilder::for(estudiante::class)
@@ -144,7 +145,51 @@ class EstudianteController extends Controller
 		return response()->json([
 			'status'=>true,
 			'data'=>$estudiantes],200);
+    } */
+
+
+
+    /* public function showEstados(Request $request)
+    {
+        
+        $estudiantes = QueryBuilder::for(estudiante::class) 
+        ->allowedIncludes(['Estados'])
+        ->join('matriculas', 'matriculas.idEstudiante', 'estudiantes.idEstudiante')
+        ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
+        ->allowedFilters([
+            AllowedFilter::exact('cursos.curso', null),
+            AllowedFilter::exact('paralelos.paralelo', null)
+            ])
+        ->select('estudiantes.idEstudiante')
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$estudiantes],200);
+    } */
+
+    public function showEstados(Request $request)
+    {
+        
+        $estudiantes = QueryBuilder::for(estado::class) 
+        ->allowedIncludes(['Estudiantes'])
+        ->join('estado_estudiantes', 'estado_estudiantes.idEstado', 'estados.idEstado')
+        ->leftJoin('matriculas', 'matriculas.idEstudiante', 'estado_estudiantes.idEstudiante')
+        ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
+        ->allowedFilters([
+            AllowedFilter::exact('cursos.curso', null),
+            AllowedFilter::exact('paralelos.paralelo', null)
+            ]) 
+        ->GroupBy('estados.idEstado')
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$estudiantes],200);
     }
+
     /**
      * Show the form for editing the specified resource.
      *

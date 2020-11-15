@@ -117,6 +117,10 @@ Route::resource('materiasProfesor','MateriasProfesorsController',[
 
 Route::get('materiasProfesorAllCursos', 'MateriaProfesorController@showAllCursos');
 
+Route::get('materiasProfesorAllCursosSmall', 'MateriaProfesorController@showAllCursosSmall');
+
+Route::get('materiasProfesorAllCursoParalelo', 'MateriaProfesorController@showAllCursoParalelo');
+
 Route::get('materiasProfesorAllLectivos', 'MateriaProfesorController@showAllLectivos');
 
 Route::get('materiasProfesor_showAllAnomalia', 'MateriaprofesorAnomaliaController@showAllAnomalias');
