@@ -94,19 +94,21 @@ class UserController extends Controller
 			return User::find($id);  
 		});
 
-		if($user->Estudiante->first()){
+		$Rol=null;
+
+		if(!is_null($user->Estudiante)){
 			$Rol="Estudiante";
 		}
 
-		if($user->Profesor->first()){
+		if(!is_null($user->Profesor)){
 			$Rol="Profesor";
 		}
 
-		if($user->Representante->first()){
+		if(!is_null($user->Representante)){
 			$Rol="Representante";
 		}
 
-		if($user->Dece->first()){
+		if(!is_null($user->Dece)){
 			$Rol="Dece";
 		}
 
