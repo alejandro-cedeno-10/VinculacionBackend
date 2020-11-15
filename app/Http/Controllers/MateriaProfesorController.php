@@ -141,8 +141,6 @@ class MateriaProfesorController extends Controller
     public function showAllCursoParalelo()
     {
         $curso = QueryBuilder::for(materia_profesor::class)
-        ->join('materias', 'materias.idMateria', 'materia_profesors.idMateria')    
-        ->join('tipo_asignaturas', 'tipo_asignaturas.idTipoAsignatura', 'materias.idTipoAsignatura') 
         ->join('cursos', 'cursos.idCurso', 'materia_profesors.idCurso')
         ->join('paralelos', 'paralelos.idParalelo', 'materia_profesors.idParalelo')
         ->join('periodo_lectivos', 'periodo_lectivos.idPeriodoLectivo', 'materia_profesors.idPeriodoLectivo')
