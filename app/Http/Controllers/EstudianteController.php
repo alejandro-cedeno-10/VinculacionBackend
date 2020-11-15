@@ -182,8 +182,8 @@ class EstudianteController extends Controller
             AllowedFilter::exact('cursos.curso', null),
             AllowedFilter::exact('paralelos.paralelo', null)
             ]) 
-        ->select('estados.*')
-        ->GroupBy('estados.*')
+        ->select('estados.nombreEstado')
+        ->GroupBy('estados.nombreEstado')
         ->get();
 
 		return response()->json([
