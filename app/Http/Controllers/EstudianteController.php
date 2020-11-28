@@ -193,7 +193,6 @@ class EstudianteController extends Controller
 
     public function showAnomaliasEstudiante($id)
     {
-        
         $Desempeño=DB::table('reporte_estudiantes')
             ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
             ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')

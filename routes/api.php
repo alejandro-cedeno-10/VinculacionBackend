@@ -188,7 +188,7 @@ Route::resource('mensajeUser','MensajeUserController',[
 
 Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');
 
-Route::get('userMensajeAll/receptor', 'UserMensajeController@showEmisorReceptorAll');
+Route::get('userMensajeAll/{id}', 'UserMensajeController@showEmisorReceptorAll');
 
 Route::get('userMensaje_receptor_emisor', 'UserMensajeController@showEmisorReceptor');
 

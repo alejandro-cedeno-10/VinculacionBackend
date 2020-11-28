@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Mensajes;
+use Illuminate\Support\Facades\DB;
 
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -130,13 +131,11 @@ class UserMensajeController extends Controller
     }
 
 
-    public function showEmisorReceptorAll()
+    public function showEmisorReceptorAll($id)
     {
-        $mensajes = QueryBuilder::for(Mensajes::class)
-        ->allowedFilters([
-            AllowedFilter::exact('mensajes.receptor', null)
-            ])
+        $mensajes = DB::table('mensajes')
         ->select('mensajes.idMensaje','mensajes.idPersona as emisor',"mensajes.receptor","mensajes.mensaje")
+        ->where('mensajes.receptor',$id)
         ->get();
 
 		return response()->json([
