@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\estudiante;
 use App\estado;
 use App\estado_estudiante;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -149,17 +150,16 @@ class EstudianteController extends Controller
 
 
 
-    /* public function showEstados(Request $request)
+    public function showEstudiantes(Request $request)
     {
         
         $estudiantes = QueryBuilder::for(estudiante::class) 
-        ->allowedIncludes(['Estados'])
-        ->join('matriculas', 'matriculas.idEstudiante', 'estudiantes.idEstudiante')
-        ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
-        ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
+            ->join('matriculas', 'matriculas.idEstudiante', 'estudiantes.idEstudiante')
+            ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
+            ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
         ->allowedFilters([
-            AllowedFilter::exact('cursos.curso', null),
-            AllowedFilter::exact('paralelos.paralelo', null)
+            AllowedFilter::exact('cursos.idCurso', null),
+            AllowedFilter::exact('paralelos.idParalelo', null)
             ])
         ->select('estudiantes.idEstudiante')
         ->get();
@@ -167,7 +167,7 @@ class EstudianteController extends Controller
 		return response()->json([
 			'status'=>true,
 			'data'=>$estudiantes],200);
-    } */
+    } 
 
     public function showEstados(Request $request)
     {
@@ -189,6 +189,28 @@ class EstudianteController extends Controller
 		return response()->json([
 			'status'=>true,
 			'data'=>$estudiantes],200);
+    }
+
+    public function showAnomaliasEstudiante($id)
+    {
+        
+        $Desempeño=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->join('categorias', 'categorias.idCategoria', 'subcategorias.idCategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('categorias.nombreCategoria', '=', "Desempeño Estudiantil")->count();
+
+        $Bienestar=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->join('categorias', 'categorias.idCategoria', 'subcategorias.idCategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('categorias.nombreCategoria', '=', "Bienestar")->count();
+
+		return response()->json([
+            'Desempeño'=>$Desempeño,
+            'Bienestar'=>$Bienestar],200);
     }
 
     /**

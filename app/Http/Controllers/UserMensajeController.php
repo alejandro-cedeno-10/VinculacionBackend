@@ -129,6 +129,21 @@ class UserMensajeController extends Controller
 			'data'=>$mensajes],200);
     }
 
+
+    public function showEmisorReceptorAll()
+    {
+        $mensajes = QueryBuilder::for(Mensajes::class)
+        ->allowedFilters([
+            AllowedFilter::exact('mensajes.receptor', null)
+            ])
+        ->select('mensajes.idMensaje','mensajes.idPersona as emisor',"mensajes.receptor","mensajes.mensaje")
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$mensajes],200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

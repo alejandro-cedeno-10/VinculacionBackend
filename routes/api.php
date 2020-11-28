@@ -48,6 +48,10 @@ Route::get('estudiantes_showOrden', 'EstudianteController@showOrden');
 
 Route::get('estudiantes_showEstados', 'EstudianteController@showEstados');
 
+Route::get('estudiantes_showEstudiantes', 'EstudianteController@showEstudiantes');
+
+Route::get('estudiantes_showAnomaliasEstudiantes/{id}', 'EstudianteController@showAnomaliasEstudiante');
+
 Route::resource('representantes','RepresentanteController',[ 
     'except'=>['create','edit']]
 );
@@ -182,7 +186,9 @@ Route::resource('mensajeUser','MensajeUserController',[
     'only'=>['index','show']]
 );
 
-Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');////////////////////////////////////
+Route::get('userMensaje/receptor/{id}', 'UserMensajeController@showReceptores');
+
+Route::get('userMensajeAll/receptor', 'UserMensajeController@showEmisorReceptorAll');
 
 Route::get('userMensaje_receptor_emisor', 'UserMensajeController@showEmisorReceptor');
 
