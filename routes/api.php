@@ -52,6 +52,8 @@ Route::get('estudiantes_showEstudiantes', 'EstudianteController@showEstudiantes'
 
 Route::get('estudiantes_showAnomaliasEstudiantes/{id}', 'EstudianteController@showAnomaliasEstudiante');
 
+Route::get('estudiantes_showAnomaliasSubcategoriasEstudiantes/{id}', 'EstudianteController@showAnomaliasSubcategoriasEstudiante');
+
 Route::resource('representantes','RepresentanteController',[ 
     'except'=>['create','edit']]
 );

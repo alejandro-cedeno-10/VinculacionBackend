@@ -212,6 +212,48 @@ class EstudianteController extends Controller
             'Bienestar'=>$Bienestar],200);
     }
 
+
+    public function showAnomaliasSubcategoriasEstudiante($id)
+    {
+        $Conducta=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('subcategorias.nombreSubcategoria', '=', "Conducta")->count();
+
+        $Desempeño=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('subcategorias.nombreSubcategoria', '=', "Desempeño")->count();
+
+        $Salud_Mental=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('subcategorias.nombreSubcategoria', '=', "Salud Mental")->count();
+
+        $Salud_fisica=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('subcategorias.nombreSubcategoria', '=', "Salud fisica")->count();
+
+        $Bullying=DB::table('reporte_estudiantes')
+            ->join('anomalias', 'anomalias.idAnomalia', 'reporte_estudiantes.idAnomalia')
+            ->join('subcategorias', 'subcategorias.idSubcategoria', 'anomalias.idSubcategoria')
+            ->where('reporte_estudiantes.idEstudiante',$id)
+            ->where('subcategorias.nombreSubcategoria', '=', "Bullying")->count();
+
+		return response()->json([
+            'Conducta'=>$Conducta,
+            'Desempeño'=>$Desempeño,
+            'Salud Mental'=>$Salud_Mental,
+            'Salud fisica'=>$Salud_fisica,
+            'Bullying'=>$Bullying
+        ],200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
