@@ -164,7 +164,7 @@ class MateriaProfesorController extends Controller
         $cursos = QueryBuilder::for(matricula::class)
         ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
         ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
-        ->select('cursos.idCurso','paralelos.idParalelo','cursos.curso', 'paralelos.paralelo')
+        ->select('cursos.idCurso','paralelos.idParalelo','cursos.curso', 'paralelos.paralelo')->distinct()
         ->get();
 
 		return response()->json([
