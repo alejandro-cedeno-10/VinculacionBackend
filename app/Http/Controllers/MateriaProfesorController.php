@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\materia;
 use App\materia_profesor;
+use App\matricula;
 
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -157,6 +158,20 @@ class MateriaProfesorController extends Controller
 			'status'=>true,
 			'data'=>$curso],200);
     }
+
+    public function showAllCursoParaleloAll()
+    {
+        $cursos = QueryBuilder::for(matricula::class)
+        ->join('cursos', 'cursos.idCurso', 'matriculas.idCurso')
+        ->join('paralelos', 'paralelos.idParalelo', 'matriculas.idParalelo')
+        ->select('cursos.idCurso','paralelos.idParalelo','cursos.curso', 'paralelos.paralelo')
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$cursos],200);
+    }
+
 
     
 

@@ -96,6 +96,9 @@ Route::resource('cursos','CursoController',[
     'except'=>['create','edit']]
 );
 
+Route::get('cursosAllParaleloAll', 'MateriaProfesorController@showAllCursoParaleloAll');
+Route::get('showEmisorReceptorAll/{id}/{id2}', 'MensajeUserController@showEmisorReceptorAll');
+
 Route::resource('paralelos','ParaleloController',[ 
     'except'=>['create','edit']]
 );

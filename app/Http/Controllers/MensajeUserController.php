@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\mensajes;
+use App\User;
 
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -81,6 +82,20 @@ class MensajeUserController extends Controller
             'status'=>true,
             'data'=>$mensaje
         ], 200);
+    }
+
+    public function showEmisorReceptorAll($id,$id2)
+    {
+        $mensajes = QueryBuilder::for(mensajes::class)
+        ->join('users', 'users.idPersona', 'mensajes.idPersona')
+        ->whereIn('mensajes.idPersona',[$id,$id2])->whereIn('mensajes.receptor',[$id,$id2])
+        ->select('mensajes.idPersona as Emisor','mensajes.receptor as Receptor')
+        ->GroupBy('cursos.created_at')
+        ->get();
+
+		return response()->json([
+			'status'=>true,
+			'data'=>$mensajes],200);
     }
 
     /**
