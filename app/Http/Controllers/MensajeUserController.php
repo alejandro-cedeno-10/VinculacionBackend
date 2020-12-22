@@ -90,7 +90,7 @@ class MensajeUserController extends Controller
         ->join('users', 'users.idPersona', 'mensajes.idPersona')
         ->whereIn('mensajes.idPersona',[$id,$id2])->whereIn('mensajes.receptor',[$id,$id2])
         ->select('mensajes.idPersona as Emisor','mensajes.receptor as Receptor')
-        ->orderBy('cursos.created_at', 'desc')
+        ->orderBy('mensajes.created_at', 'desc')
         ->get();
 
 		return response()->json([
