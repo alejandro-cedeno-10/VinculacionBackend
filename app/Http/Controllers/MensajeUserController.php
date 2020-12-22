@@ -89,7 +89,7 @@ class MensajeUserController extends Controller
         $mensajes = QueryBuilder::for(mensajes::class)
         ->join('users', 'users.idPersona', 'mensajes.idPersona')
         ->whereIn('mensajes.idPersona',[$id,$id2])->whereIn('mensajes.receptor',[$id,$id2])
-        ->select('mensajes.idPersona as Emisor','mensajes.receptor as Receptor')
+        ->select('mensajes.idPersona as Emisor','mensajes.receptor as Receptor','mensajes.mensaje','mensajes.idMensaje')
         ->orderBy('mensajes.created_at', 'desc')
         ->get();
 
